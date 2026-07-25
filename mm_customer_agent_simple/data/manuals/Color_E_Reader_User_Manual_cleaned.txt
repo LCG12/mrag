@@ -1,0 +1,450 @@
+# Color E-Reader User Manual
+
+# Table of Contents
+
+* Introduction — page 1
+* Device description — page 2
+* Front view — page 2
+* Navigation button view — page 3
+* Bottom view — page 3
+* Power management — page 4
+* General Operation — page 4
+* Main Menu — page 5
+* Browser History — page 6
+* eBook — page 6
+* Music — page 8
+* Video — page 11
+* Photo — page 12
+* Voice Recording — page 13
+* Setting — page 15
+* Document Management — page 17
+* Connect eBook to the computer — page 17
+* Manage files — page 17
+* Inserting Micro SD card — page 17
+* Taking care of your E Reader — page 17
+* Maintenance and Attention — page 18
+* Firmware upgrade — page 18
+* Technical specification — page 19
+* Troubleshooting — page 19
+
+Thank you for purchasing Color E-Reader. We suggest that you read through this user manual for a better understanding before using this device. All pictures and graphics displayed below are simulated and are not intended to specify included applications or content. Technical information and specifications are subject to change without notice.
+
+Notes
+
+1. If the player cannot power on for the first time, please charge it via USB cable until the battery indicator is full.
+2. Please handle this reader with care to prevent screen damage.
+3. Please do not remove the built-in battery when the device is in charging mode.
+4. The built-in battery is replaceable; however, this needs to be done by the manufacturer. Please contact the manufacturer by phone or email.
+5. Please contact the manufacturer if you encounter a problem with the device. Do not attempt to disassemble the device by yourself.
+
+# Special Features
+
+This E Reader is multifunctional and is compatible with the following formats:
+
+* EBook: TXT, EPUB, PDF, FB2, HTML
+* Audio: MP3, WMA, WAV, AAC, etc.
+* Photo: JPEG
+* Video: AVI, RMVB, MPEG2
+* Voice Recording: AAC
+
+Accessories
+
+The following accessories are included with this device. Please contact the manufacturer if any parts are missing:
+
+* Leather Carrying Bag
+* USB Cable
+* AC Power Adaptor
+
+Device Description
+
+# Front View
+
+[Manual13_0]
+
+[1] Home/ESC button: When you are prompted to select or enter, press this button to cancel the operation, exit the sub-interface, or exit the current interface and return to the previous interface.
+
+[2] Prev/Next Page: Press this button to open the previous or next page.
+
+[3] Navigation/Menu: The Navigation button is a 4-way control button: left, right, up, and down. The Menu button is used for the menu and confirmation.
+
+[4] Zoom in/out: Zoom in or out of the JPEG file. Also increase or decrease the font size of the E book content.
+
+[5] Rotate: Use this function to rotate your EBook into either horizontal or vertical view.
+
+[6] 3.5 mm Earphone Jack: Connect your earphones for private enjoyment (earphones not included).
+
+[7] USB Port: Use the USB cable to charge the device and to connect it to a computer to transfer your contents.
+
+[8] Micro SD card reader: Compatible with Micro SD/SDHC up to 16 GB memory.
+
+[9] Play/Pause: Press this button to start or pause playing music or recording by MIC.
+
+[10] Power button: Press the button for 3–5 seconds to power on/off the device.
+
+[11] Volume +: Press the UP button to increase the volume when playing music.
+
+[12] Volume -: Press the DOWN button to reduce the volume when playing music.
+
+[13] Reset On/Off switch: This is located on the back of the device next to the card reader. It resets the device back to the factory default. You might use this key when you encounter some minor problem with the device.
+
+[14] Speaker: 0.5 W audio output.
+
+[15] TFT LCD Display Screen: 7" diagonal.
+
+Navigation Button View
+
+[Manual13_1]
+
+Bottom View
+
+[Manual13_2]
+
+Power Management
+
+# Charging the battery
+
+The e-book's battery has been partially charged at the factory. The battery indicator is located on the upper right-hand side of the Main menu when you turn on the device. The battery indicator is a graphic that shows the power left in the battery. If you find that the battery indicator has less than 2 bars, please charge the device via USB cable to an AC adaptor or to a computer. Please unplug the USB cable once the device is fully charged.
+
+# Charging via USB data cable to the computer
+
+1. Connect to your computer via USB data cable. Go to the "Safely Remove Hardware" icon located at the bottom of the Windows task bar, then left-click it. This will safely remove your USB mass storage device.
+2. Now the device goes to USB charging mode, and you will see a charging battery icon displayed on your e-book reader's screen. Please note that if you charge the device via computer, it will normally take longer than via AC adaptor. Again, please do not remove the battery while charging is in process.
+
+# Replacing the Battery
+
+This device includes a Lithium polymer rechargeable battery (3.7 V, 2000 mAh). Should you need to replace the battery, please contact the manufacturer and do not attempt to do so by yourself. This process can only be done by the manufacturer’s technician.
+
+General Operation
+
+# Power ON/OFF the device
+
+1. Slide the Power On/Off switch to ON, then press and hold the Power button for 5 seconds and release the button to turn on.
+2. To turn OFF the device, press and hold the Power button for 5 seconds. We recommend sliding the Power On/Off switch to OFF if you do not plan to use this device for a certain time.
+
+# Button operation
+
+1. The Navigation button: Use the "<" and ">" keys to select the left/right/up/down direction.
+2. Confirm/Enter: For selected items, press the "M" key to enter the currently selected function or refresh the screen.
+3. ESC: Press the "Home/ESC" button to return to the previous screen.
+
+# Main Menu
+
+This interface shows all features of this device as follows: "Browser History", "eBook", "Music", "Video", "Photo", "Record", "Explorer", and "Settings". Select the desired function, then enter.
+
+[Manual13_3]
+
+# Browser History
+
+Display the file recently browsed. Move the Navigation keys to select a book, then press the “M” button to enter. It will go to the last page you read in the selected book.
+
+[Manual13_4]
+
+Note: If the files in the Micro SD card that were recently read are deleted, the records will continue to be retained in the "Browser History" list; however, you cannot open them.
+
+eBook
+
+Compatible Format: EPUB, FB2, HTML, PDF, and TXT.
+
+Selecting the Book
+
+Select the desired book, then click the "M" button to start reading its content.
+
+Previous/Next Page
+
+You can use these buttons to “turn” the page. You can also use up and down in Navigation control to do the same task.
+
+# Page Jump, Save Mark, Load Mark, Del Mark, Browser Mode
+
+When in eBook mode, you can press the “M” button to enter "Page Jump", "Save Mark", "Load Mark", "Del Mark", "Browser Mode", "Flip Time", "Brightness", and "Set Color".
+
+[eReader_08]
+
+[eReader_08 Figure description: The image shows an eReader screen with the title "A Modest Proposal" in the background. The visible text includes the title "A Modest Proposal", the subtitle "For preventing the children of poor people in Ireland, from being a burden on their parents or country, and for making them beneficial to the publick", "***", "Jonathan Swift", "Originally Published 1729", and "epubBooks.com". In the upper section, the left side shows a function menu with the following options from top to bottom: 1. "Page Jump" (highlighted, with an arrow ">" on the right), 2. "SaveMark" (with an arrow ">"), 3. "LoadMark" (with an arrow ">"), 4. "DelMark" (with an arrow ">"), and 5. "Browser Mode" (with an arrow ">"). The bottom of the menu shows "eBook". The status area at the bottom shows page number "1/9" and time "22:13". In the lower section, the left side shows another menu with the following options from top to bottom: 1. "DelMark" (with an arrow ">"), 2. "Browser Mode" (with an arrow ">"), 3. "Flip Time" (with an arrow ">"), 4. "Brightness" (with an arrow ">"), and 5. "Set Color" (highlighted, with an arrow ">"). The bottom of the menu shows "eBook". The status area at the bottom shows page number "1/9" and time "22:19".]
+
+Page Jump
+
+Press the “M” key, then select “Page Jump”. Press the “M” button again, key in the desired page number, and press “M” to go to that specific page.
+
+Bookmarks
+
+This feature allows you to go to a certain page of a certain book by selecting it from the bookmark list.
+
+Save a bookmark
+
+When in eBook mode, press the "M" button, then select “Save Mark” and press “M” again to add the current page as a bookmark.
+
+# Load a Bookmark
+
+When in eBook mode, press the "M" button, then select "Load Mark" and press “M” again to open the saved bookmark list. Select the desired bookmark and press the “M” key.
+
+[Manual13_5]
+
+# Delete a bookmark
+
+When in eBook mode, press the "M" button, then select "Del Mark". A list of saved bookmarks will pop out. Please select the one you wish to delete, then press the “M” key to confirm.
+
+Bookmark capacity: This device allows up to 8 saved bookmarks. When it reaches its limit, the newly saved bookmark will overwrite the oldest bookmark.
+
+Zoom
+
+Press this key to change the font size. There are 3 different font sizes: Small, Medium, and Large.
+
+Rotate
+
+When in eBook mode, you can rotate the screen either horizontally or vertically for your convenience by pressing this rotate button.
+
+Browser Mode
+
+There are two browser modes: “Auto Mode” and “Manual Mode”.
+
+Flip Time
+
+There are five flip times to select: 10Sec, 15Sec, 20Sec, 25Sec, and 30Sec.
+
+Brightness
+
+There are five brightness levels to select. You can select the desired comfortable brightness.
+
+Set Color
+
+There are five colors to select. You can select the comfortable word color to read.
+
+[Manual13_6]
+
+# Music Mode
+
+Open the audio files list in the main menu, select the desired audio file, then press "M" to play mode.
+
+You can add an audio file by connecting to your computer via USB cable, then dragging your desired audio files and pasting them into this device. This device supports MP3, WMA, WAV, AAC, and other formats. This device allows you to listen to your audio file while reading the E book or browsing the photo or menu.
+
+[Manual13_7]
+
+Adjusting the volume
+
+Press the "Up/Down" key on the Navigation button or the Up/Prev Page and Down/Next Page keys to adjust the volume.
+
+Play/Pause
+
+Press the "Play/Pause" key to pause or continue playback.
+
+# Forward/Backward/Previous/Next
+
+Press and hold the “left direction” key to rewind the music and the “right direction” key to fast-forward the music. Press and release the “left direction” key to go to the previous audio file and the “right direction” key to go to the next audio file.
+
+# Music play mode
+
+There are five audio playing modes: "Repeat Mode", "Play Mode", "MS EQ", "EQ Sel", and "User EQ setup". When in Music mode, press “M”, then select the desired mode that you wish to adjust.
+
+[Manual13_8]
+
+Video
+
+Go to “Video” and press the “M” key to enter Video mode.
+
+This device supports AVI, RMVB, and MPEG2 video formats.
+
+[Manual13_9]
+
+Subtitle Language
+
+When in video playing mode, if subtitles are available from your video file, press the "M" button, then press Subtitle Language to make changes.
+
+Select Time play
+
+Press the "M" button, then select “Time Play”; you can change the time to play.
+
+Full screen
+
+Press the "M" button, then select “Full Screen” to change the screen display. There are three modes: “Full screen”, “Normal”, and “Original”.
+
+Brightness
+
+There are five levels of brightness. You can select the comfortable brightness.
+
+Photo
+
+Go to Photo and press the "M" button to enter Photo mode.
+
+This device supports JPEG and BMP image formats.
+
+Photo previous and Next
+
+Press the "left/right" navigation keys to go to the previous or next photo.
+
+Photo Rotation
+
+Press the "Play/Pause" key to rotate the photo in counter-clockwise sequence.
+
+# Zoom in/out
+
+Press this key to zoom in or out of a photo.
+
+Note: Some large files require more time to rotate than small files. They also require more time to load the photos into the photo viewer.
+
+[Manual13_10]
+
+Voice Recording
+
+Select "Record" in the main menu, then click the "M" button to enter voice record mode.
+
+[Manual13_11]
+
+# How to start the Recording
+
+Press the "Play/Pause" button to start the recording, press it again to pause the recording, and press "HOME" to stop the recording. After you are done with the recording, you will be prompted to ask if you want to save it into the device. Please select “YES” or “NO” by pressing the “M” key.
+
+[Manual13_12]
+
+# Record Playback Function
+
+1. Go to the main menu and select “Music”, then press “M” to go to “Music Menu”.
+2. Select "Record" and press the "M" button to go to the “Recorded” file list.
+3. Select the desired recorded file, then press “M” to start playback.
+
+# Settings
+
+Select "Settings" from the main menu, then click the "M" button to enter the system settings mode. It includes the following sub-menus: "Display Settings", "System Settings", "Language", "System Information", "Auto-shut time", "Time", and "Calendar".
+
+[Manual13_13]
+
+# Display setting
+
+Select "Display Settings", then click the "M" button to open the Display settings menu.
+
+[eReader_01]
+
+1. To select "Light Time", it will display “5 seconds”, “10 seconds”, “15 seconds”, “20 seconds”, “30 seconds”, and “Always On”. Please select the desired time and press “M” to confirm.
+2. There are 5 levels of "Brightness". Please select the desired brightness level, then press the “M” key to confirm.
+
+# System setting
+
+Select "System Settings", then click the "M" button to go into the system settings menu.
+
+[eReader_02]
+
+1. Select "Restore" to restore your system to factory default settings. Please make sure to back up all the data in the device before doing so.
+2. To select "Key Lock Time", it will display “10 seconds”, “30 seconds”, “5 Minutes”, “10 Minutes”, and “No Locking”. Select the time or “No Locking” and click the "M" button to change the key locking time.
+
+# Language Settings
+
+This device provides several On Screen Languages: English, Chinese, Deutsch, Portuguese, French, Spanish, and other Languages. In the system setting menu, select “Language”, then select the desired Language and press the “M” key to confirm.
+
+[eReader_03]
+
+System Information
+
+It displays version information of the device, product brands, company name, Software version, Memory Size, and other information.
+
+[eReader_04]
+
+# Automatic shutdown time
+
+There are five automatic shutdown times: 3 minutes, 5 minutes, 10 minutes, 15 minutes, and 20 minutes. Please select the desired time and press the “M” key to confirm.
+
+[eReader_05]
+
+Time Settings
+
+Display the current system time information. You can change the “HH” hour and “MM” minutes by the “Up/Down/Left/Right” direction key, then select “YES” to confirm the change.
+
+# Date Settings
+
+Display the current system date information. You can change the “YY” year, “MM” month, and “DD” days by the “Up/Down/Left/Right” direction key, then select “YES” to confirm the change.
+
+[eReader_06]
+
+Calendar
+
+Select "Calendar", then click the "M" button to enter.
+
+[eReader_07]
+
+Document Management
+
+# Connect e-book to the computer
+
+Please connect this device to your computer via USB data cable.
+
+This reader will automatically turn on and the screen will show “USB Connection”. Your computer will identify this reader as a Removable Disk after the connection is completed. Your computer will show 2 removable disks for this device: one is for the built-in internal memory of this device and the other is for the Micro SD card (not included), if you have inserted one.
+
+# Manage files
+
+After the device is properly connected to your computer, you can select the removable disk in "My Computer" and start to transfer, copy, or delete files between this device and your computer.
+
+# Inserting a Micro SD card (not included)
+
+You can expand the memory of this device (up to 16 GB) by inserting a micro SD or SDHC card (it is also called a TF card). First power off the device, then insert a micro SD card and turn the device back on.
+
+# Note about the use of Micro SD card
+
+If your device encounters a problem identifying your inserted Micro SD card, please turn off the device, pull the memory card out, and reinsert it again.
+
+VERY IMPORTANT: Please make sure to turn the power off when pulling the memory card and/or inserting the memory card. Also, do not reset the unit when your memory card is inserted into the device.
+
+# Taking Care of your E Reader
+
+This E Reader is designed to be light, compact, and durable. However, since it is an electronic device, it must be treated and maintained carefully. Putting unnecessary pressure on it or striking the device against other objects can cause damage. In order to avoid damage to your E Reader, please:
+
+* Keep the device covered when you are not using it. This will protect the screen from being scratched or damaged in any way.
+* Do not drop, crush, bend, or apply excessive force onto the device.
+* Do not expose this device to moisture, extreme temperature, or any harmful conditions.
+* Clean the device by wiping with a soft, dry cloth. Do not use harsh chemicals.
+
+# Maintenance and Attention
+
+Please do not attempt to repair or disassemble this reader. Contact the manufacturer should your device encounter the following:
+
+1. The device is subject to spills or foreign liquid objects falling into the device.
+2. The device gets wet by rain or water.
+3. The device gets damaged by falling.
+4. There is obvious overheating.
+5. After implementing the correct operation, the product still cannot work properly.
+
+# Firmware Upgrade
+
+We will upload any firmware onto our website if it needs any firmware upgrade in the future. You can also download the user manual and/or any other instructions related to this E Reader.
+
+# The proper environment when using this reader
+
+The appropriate temperature for this device is between 32 to 120 °F (0–50 °C). Beyond this temperature range, the screen display will deteriorate, so the user should avoid using it outdoors in the winter. Please do not place this device in environments with moisture, dust, or high temperature.
+
+# Avoid causing extrusion of the device
+
+Please do not shake, squeeze, or impact this device severely, and avoid imposing too much pressure on the screen and device. We recommend that you put the device in the leather case provided in the package for better protection.
+
+Avoid plugging objects into the Device
+
+Do not place any object in the gaps or other openings. They are used to provide ventilation and heat dissipation. These openings cannot be blocked or hidden.
+
+# Technical Specifications
+
+| Item | Specification |
+|---|---|
+| Size | 9.13 × 6 × 0.6 inches (201 × 132 × 12.8 mm) |
+| Weight | 0.40 lb (170 g) (battery included) |
+| Screen Size | 7" TFT Color LCD |
+| Resolution | 800 × 480 pixels |
+| Storage Memory | 32 MB RAM, 2 GB Flash |
+| Processor | ARM 400 MHz |
+| Communication Ports | USB Client (v2.0) - Mini USB connector, Micro SD card slot |
+| Audio outputs | 3.5 mm stereo earphones jack, built-in speaker |
+| Battery | Rechargeable built-in Li-Polymer battery (2000 mAh) |
+| Peripherals | USB synchronization cable |
+| Operating System | Android |
+| Software Suite | Multi-format eBook reader |
+| Supported image formats | JPG, GIF, PNG |
+| Supported sound format | WAV, WMA, MP3... |
+| Supported Video formats | AVI, RMVB, MOV, MP4... |
+| Supported TXT format | TXT, EPUB, FB2, PDF, HTML |
+| Power Source | 5 V--2 A |
+| Power Consumption | <5 W |
+
+# Troubleshooting
+
+| No. | Problem | Solution |
+|---|---|---|
+| 1 | Cannot power on the e-book reader | a. Please charge the device until the power indicator bar is full.<br>b. Defective device; please contact the manufacturer for instruction. |
+| 2 | Not able to charge the device | a. Defective AC adaptor; please contact the manufacturer for replacement.<br>b. Defective USB Cable; please contact the manufacturer for replacement. |
+| 3 | No sound or noise when using earphones | a. Adjust volume setting; make sure the volume is not in the 0 position.<br>b. Try another pair of earphones.<br>c. Make sure the music file compression rate is high. Low-quality music files may cause noise and distortion. |
+| 4 | Cannot download files into the reader | a. Possible defective USB cable.<br>b. E Reader’s memory is full.<br>c. Windows 98 may require a new USB 2.0 DRIVER to detect the e-book reader as a removable disk. Please visit a website to download the driver. |
+| 5 | Cannot play the music files | a. This reader has a powerful audio processor and is able to play most popular audio formats. However, some latest music formats or resolutions might not work properly in this device. Please contact manufacturer tech support for assistance. |

@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+gradio
+openai
+python-dotenv
+pydantic
+qdrant-client
+rank-bm25
+jieba
+numpy
+tqdm
+pillow
+easyocr

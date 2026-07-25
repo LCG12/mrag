@@ -1,0 +1,434 @@
+# Espresso Coffee Machine User Manual
+
+An exclusive system creates the perfect espresso, time after time. All machines are equipped with a unique extraction system that guarantees up to 19 bar pressure. Each parameter has been calculated with great precision to ensure that all the aromas from each Grand Cru can be extracted, to give the coffee body and create an exceptionally thick and smooth crema.
+
+
+# Important Safeguards
+
+[Manual07_0]
+[Manual07_0 Figure description: The image shows a safety-symbol explanation table. The first row shows a triangle with an exclamation mark and explains that the symbol alerts users to hazards and safety information to avoid possible injury or death. The second row shows a yellow warning triangle with the word "WARNING" and explains that it indicates a hazardous situation which, if not avoided, could result in death or serious injury. The third row shows a yellow warning triangle with the word "CAUTION" and explains that it indicates a hazardous situation which, if not avoided, could result in minor or moderate injury. The fourth row shows an information symbol and explains that it is used for important information, notes, correct use, and safety recommendations.]
+
+When using electrical appliances, basic safety precautions should always be followed, including the following:
+
+- Read all instructions.
+- Do not use outdoors.
+- Do not let the cord hang over the edge of a table or counter, or touch hot surfaces.
+- The safety precautions are part of the appliance. Read them carefully before using your new appliance for the first time. Keep them in a place where you can find and refer to them later on.
+- The appliance is intended to prepare beverages according to these instructions.
+- Do not use the appliance for any use other than the intended use.
+- This appliance has been designed for indoor, non-extreme temperature conditions use only.
+- Protect the appliance from direct sunlight, prolonged water splash and humidity.
+- This appliance is intended to be used in households and similar applications only, such as staff kitchen areas in shops, offices and other working environments; by clients in hotels, motels and other residential-type environments; and bed and breakfast-type environments.
+- This appliance can be used by children aged 8 years and above and by persons with reduced physical, sensory or mental capabilities, or lack of experience and knowledge, if they have been given supervision or instruction concerning use of the appliance in a safe way and understand the hazards involved.
+- Children shall not play with the appliance.
+- Cleaning and user maintenance shall not be made by children without supervision.
+- Children should be supervised to ensure that they do not play with the appliance.
+- Close supervision is necessary when the appliance is used by or near children.
+- The manufacturer accepts no responsibility and the warranty will not apply for any commercial use, inappropriate handling or use of the appliance, any damage resulting from use for other purposes, faulty operation, non-professional repair, or failure to comply with the instructions.
+
+# Avoid risk of fatal electric shock and fire
+
+- In case of an emergency, immediately remove the plug from the power socket.
+- Only plug the appliance into suitable, easily accessible, earthed mains connections.
+- The appliance must only be connected after installation.
+- Make sure that the voltage of the power source is the same as that specified on the rating plate.
+- The use of an incorrect connection voids the warranty.
+- Do not pull the cord over sharp edges, clamp it, or allow it to hang down.
+- Keep the cord away from heat and damp.
+- If the supply cord is damaged, it must be replaced by the manufacturer, its service agent, or similarly qualified persons.
+- If the cord is damaged, do not operate the appliance.
+- Return the appliance to the Club.
+- If an extension cord is required, use only an earthed cord with a conductor cross-section of at least 16 AWG size or matching the input power.
+- Always attach the plug to the appliance first, then plug the cord into the wall outlet.
+- To disconnect, turn any control to "off", then remove the plug from the outlet.
+- To avoid hazardous damage, never place the appliance on or beside hot surfaces such as radiators, stoves, ovens, gas burners, open flames, or similar.
+- Do not touch hot surfaces. Use handles or knobs.
+- Always place the appliance on a horizontal, stable and even surface.
+- The surface must be resistant to heat and fluids such as water, coffee, descaling agent, or similar.
+- Disconnect the appliance from the mains when not in use for a long period.
+- Disconnect by pulling out the plug and not by pulling the cord itself, or the cord may become damaged.
+- Before cleaning and servicing, remove the plug from the mains socket and let the appliance cool down.
+- Never touch the cord with wet hands.
+- Never immerse the appliance or part of it in water or any other liquid.
+- Never put the appliance or part of it in a dishwasher.
+
+# Important Safeguards
+
+- Electricity and water together are dangerous and can lead to fatal electric shocks.
+- Do not open the appliance; dangerous voltage inside.
+- Do not dismantle the appliance.
+- Do not put anything into any openings; doing so may cause fire or electric shock.
+
+# Avoid possible harm when operating the appliance
+
+- Never leave the appliance unattended during operation.
+- Do not use the appliance if it is damaged or not operating perfectly.
+- Immediately remove the plug from the power socket.
+- Contact the Club for examination, repair, or adjustment.
+- A damaged appliance can cause electric shocks, burns and fire.
+- Always close the lever completely and never lift it during operation; scalding may occur.
+- Do not put fingers under the coffee outlet; risk of scalding.
+- Do not put fingers into the capsule compartment or capsule shaft; danger of injury.
+- Water could flow around a capsule when not perforated by the blades and damage the appliance.
+- Never use a damaged or deformed capsule.
+- If a capsule is stuck in the capsule compartment, turn the machine off and unplug it before any operation; call the Club.
+- Always fill the water tank with fresh, drinking, cold water.
+- Do not overfill the water tank.
+- Empty the water tank if the appliance will not be used for an extended time, such as holidays.
+- Replace water in the water tank when the appliance is not operated during a weekend or a similar period of time.
+- Do not use the appliance without the drip tray and drip grid to avoid spilling any liquid on surrounding surfaces.
+- Do not use any strong cleaning agent or solvent cleaner.
+- Use a damp cloth and mild cleaning agent to clean the surface of the appliance.
+- Do not use a steam or pressure cleaner to clean the appliance; this may damage the appliance to the point of creating a life-threatening hazard.
+- When unpacking the machine, remove the plastic film on the drip grid and dispose of it.
+- This appliance is designed for coffee capsules available exclusively through the Club or your authorized representative.
+- Quality is only guaranteed when capsules are used in appliances.
+- For your own safety, use only parts and appliance accessories designed for your appliance.
+- All appliances pass stringent controls.
+- Reliability tests under practical conditions are randomly performed on selected units.
+- Some units can therefore show traces of previous use.
+- The manufacturer reserves the right to change instructions without prior notice.
+
+# Short cord instructions
+
+1. A short power-supply cord or detachable power-supply cord is to be provided to reduce risks resulting from becoming entangled in or tripping over a longer cord.
+2. Longer detachable power-supply cords or extension cords are available and may be used if care is exercised in their use.
+3. If a long detachable power-supply cord or extension cord is used:
+   1. The marked electrical rating of the detachable power-supply cord or extension cord should be at least as great as the electrical rating of the appliance.
+   2. If the appliance is of the grounded type, the extension cord should be a grounding-type 3-wire cord.
+   3. The longer cord should be arranged so that it will not drape over the countertop or tabletop where it can be pulled on by children or tripped over.
+- The appliance has a polarized plug, with one blade wider than the other.
+- To reduce the risk of electric shock, this plug is intended to fit into a polarized outlet only one way.
+- If the plug does not fit fully into the outlet, reverse the plug.
+- If it still does not fit, contact a qualified electrician.
+- Do not attempt to modify the plug in any way.
+
+# Descaling
+
+Descaling agent, when used correctly, helps to ensure the proper functioning of your machine over its lifetime and that your coffee experience is as perfect as on the first day. For the correct amount and procedure to follow, consult the user manual included in the descaling kit.
+
+Save These Instructions
+
+Pass them on to any subsequent user.
+
+# Overview
+
+[Manual07_1]
+[Manual07_1 Figure description: The figure shows a black schematic diagram of the machine with blue dashed leader lines and English/French labels. The labeled components include: "Lever/Levier" at the upper right; "Coffee buttons (Espresso and Lungo)/Touches de sélection du café (Espresso et Lungo)" at the upper left; "Coffee outlet/Embout de sortie du café" on the middle left; a transparent water tank on the right labeled "Water tank (1 L/34 oz)/Réservoir d'eau (1 L/34 oz)"; a capsule container on the left labeled "Capsule container for 9-11 used capsules/Réservoir à capsules pour 9 à 11 capsules"; and the lower components labeled "Drip base/Socle collecteur", "Drip grid/Grille d'égouttage", and "Drip tray/Bac d'égouttage".]
+
+Overview / Présentation
+
+# Specifications
+
+[Manual07_2]
+[Manual07_2 Figure description: The image shows the product specification table for "CitiZ D111". The table includes dimensions labeled "5.12 in / 13 cm", "10.94 in / 27.8 cm", and "14 in / 37.2 cm"; electrical rating "120 V, 60 Hz, 1720 W (US and/et CANADA)"; pressure "Max/max. 19 Bar"; weight "2.2 lbs / 3.4 kg"; and water tank capacity "1 L / 34 oz".]
+
+| Specification | Value |
+|---|---|
+| Model | CitiZ D111 |
+| Dimensions | 5.12 in / 13 cm; 10.94 in / 27.8 cm; 14 in / 37.2 cm |
+| Electrical rating | 120 V, 60 Hz, 1720 W (US and/et CANADA) |
+| Pressure | Max. 19 bar |
+| Weight | 2.2 lbs / 3.4 kg |
+| Water tank capacity | 1 L / 34 oz |
+
+# Packaging Content
+
+[Manual07_3]
+[Manual07_3 Figure description: The image shows the packaging contents arranged horizontally. From left to right: "Coffee Machine / Machine à café"; "Nespresso Grand Cru capsule tasting gift / Capsules-cadeaux Grand Cru de Nespresso"; "«Welcome to Nespresso» Folder / Trousse « Bienvenue chez Nespresso »"; and "User Manual / Manuel de l'utilisateur".]
+
+- Coffee Machine / Machine à café
+- Nespresso Grand Cru capsule tasting gift / Capsules-cadeaux Grand Cru de Nespresso
+- «Welcome to Nespresso» Folder / Trousse « Bienvenue chez Nespresso »
+- User Manual / Manuel de l'utilisateur
+
+# Energy Saving Mode
+
+This machine is equipped with an energy saving feature. The machine will automatically enter power off mode after 9 minutes. To turn the machine on, press either the Espresso or Lungo button.
+
+[Manual07_4]
+
+To turn the machine off before automatic Power Off mode, press both the Espresso and Lungo buttons simultaneously.
+
+[Manual07_5]
+
+# To change this setting
+
+1. With the machine turned off, press and hold the Espresso button for 3 seconds.
+
+[Manual07_6]
+
+2. The Espresso button will blink to indicate the current setting.
+
+[Manual07_7]
+
+3. To change this setting, press the Espresso button:
+   - Once for power off mode after 9 minutes.
+   - One more time for power off mode after 30 minutes.
+   - One more time to deactivate.
+
+[Manual07_8]
+
+4. To exit the energy saving mode, press the Lungo button for 3 seconds.
+
+[Manual07_9]
+
+# First Use or After a Long Period of Non-Use
+
+Caution
+
+First read the important safeguards to avoid risks of fatal electrical shocks and fire.
+
+1. Remove the plastic film from the drip grid.
+
+[Manual07_10]
+
+2. Rinse the water tank before filling it with drinkable water.
+
+[Manual07_11]
+
+3. Place a container with a minimum capacity of 1 L / 34 oz under the coffee outlet.
+
+[Manual07_12]
+
+4. Plug into the mains.
+
+[Manual07_13]
+
+5. Press the Espresso or Lungo button to activate the machine.
+
+[Manual07_14]
+
+Blinking lights: heating up for 25 seconds.
+
+Steady lights: ready.
+
+[Manual07_19]
+
+6. Press the Lungo button to rinse the machine. Repeat 3 times.
+
+[Manual07_16]
+
+# Coffee Preparation
+
+1. Rinse, then fill the water tank with drinkable water.
+
+[Manual07_17]
+
+2. Press the Espresso or Lungo button to activate the machine.
+
+[Manual07_18]
+
+Blinking lights: heating up for 25 seconds.
+
+Steady lights: ready.
+
+[Manual07_19]
+
+3. Lift the lever completely and insert a capsule.
+
+Caution
+
+Never lift the lever during operation. Refer to the important safeguards to avoid possible harm when operating the appliance.
+
+Note
+
+During heat-up, you can press either coffee button while it is blinking. The coffee will then flow automatically when the machine is ready.
+
+[Manual07_20]
+
+4. Close the lever and place a cup under the coffee outlet.
+
+[Manual07_21]
+
+5. Press the Espresso button (40 ml / 1.35 oz) or the Lungo button (110 ml / 3.7 oz) to start. Preparation will stop automatically. To stop the coffee flow manually or add more coffee, press again.
+
+[Manual07_22]
+
+6. Remove the cup. Lift and close the lever to eject the capsule into the used capsule container.
+
+[Manual07_23]
+
+# Programming the Water Volume
+
+1. Turn the machine on and wait for it to be in ready mode, with steady lights.
+
+[Manual07_24]
+
+2. Fill the water tank with potable water and insert a capsule.
+
+[Manual07_25]
+
+3. Place a cup under the coffee outlet.
+
+[Manual07_26]
+
+4. Press and hold the Espresso or Lungo button.
+
+[Manual07_27]
+
+5. Release the button once the desired volume is served.
+6. The water volume level is now stored.
+
+# Emptying the System Before a Period of Non-Use and for Frost Protection, or Before a Repair
+
+Note
+
+Your machine will be blocked for 10 minutes after emptying mode.
+
+1. To enter emptying mode, press both the Espresso and Lungo buttons to turn the machine off.
+
+[Manual07_28]
+
+2. Remove the water tank and open the lever.
+
+[Manual07_29]
+
+3. Press both the Espresso and Lungo buttons for 3 seconds.
+
+[Manual07_30]
+
+Both LEDs blink alternately.
+
+[Manual07_31]
+
+4. Close the lever.
+
+[Manual07_32]
+
+5. The machine switches off automatically.
+6. Empty and clean the used capsule container and drip tray.
+
+# Reset to Factory Settings
+
+1. With the machine turned off, press and hold down the Lungo button for 5 seconds.
+
+[Manual07_33]
+
+2. The LEDs will blink quickly 3 times to confirm that the machine has been reset to factory settings.
+
+[Manual07_34]
+
+3. The LEDs will then continue to blink normally while heating up, until ready.
+
+Steady lights: machine ready.
+
+[Manual07_35]
+
+Factory Settings
+
+| Setting | Value |
+|---|---|
+| Espresso cup | 40 ml / 1.35 oz |
+| Lungo cup | 110 ml / 3.7 oz |
+| Power Off mode | 9 minutes |
+
+# Descaling
+
+Note
+
+Duration: approximately 15 minutes.
+
+1. Remove the capsule and close the lever.
+
+[Manual07_36]
+
+2. Empty the drip tray and used capsule container.
+
+[Manual07_37]
+
+3. Fill the water tank with 0.5 L / 17 oz of drinkable water and add 1 descaling liquid.
+
+[Manual07_38]
+
+4. Place a container with a minimum volume of 1 L / 34 oz under the coffee outlet.
+
+[Manual07_39]
+
+5. To enter descaling mode while the machine is turned on, press both the Espresso and Lungo buttons for 3 seconds.
+
+[Manual07_40]
+
+Both LEDs blink.
+
+[Manual07_41]
+
+6. Press the Lungo button and wait until the water tank is empty.
+
+[Manual07_42]
+
+7. Refill the water tank with the used descaling solution collected in the container and repeat steps 4 and 6.
+
+[Manual07_43]
+
+8. Empty and rinse the water tank. Fill it with drinkable water.
+
+[Manual07_44]
+
+9. When ready, repeat steps 4 and 6 to rinse the machine.
+10. To exit descaling mode, press both the Espresso and Lungo buttons for 3 seconds.
+
+[Manual07_45]
+
+11. The machine is now ready for use.
+
+Caution
+
+The descaling solution can be harmful. Avoid contact with eyes, skin and surfaces. Never use any product other than the descaling kit available at the Club to avoid damage to your machine. The following table indicates the descaling frequency required for optimum performance of your machine, based on water hardness. For any additional questions you may have regarding descaling, please contact your Club.
+
+[Manual07_46]
+[Manual07_46 Figure description: The image shows a water hardness and descaling frequency table. The English/French title reads "Water hardness / Descale after" and "Dureté de l'eau / Détartrer après". Data columns include fH values 36, 18 and 0; dH values 20, 10 and 0; CaCO₃ values 360 mg/l, 180 mg/l and 0 mg/l; and cups/tasses values 300, 600 and 1200, based on 1.35 oz / 40 ml cups. The right side explains: fH = French grade, dH = German grade, and CaCO₃ = calcium carbonate.]
+
+| Water hardness fH | Water hardness dH | CaCO₃ | Descale after |
+|---:|---:|---:|---:|
+| 36 | 20 | 360 mg/l | 300 cups / tasses, 1.35 oz / 40 ml |
+| 18 | 10 | 180 mg/l | 600 cups / tasses, 1.35 oz / 40 ml |
+| 0 | 0 | 0 mg/l | 1200 cups / tasses, 1.35 oz / 40 ml |
+
+fH = French grade.  
+dH = German grade.  
+CaCO₃ = calcium carbonate.
+
+# Cleaning
+
+Warning
+
+Risk of fatal electrical shock and fire. Never immerse the appliance or part of it in water. Make sure to unplug the machine before cleaning. Do not use any strong cleaning agent or solvent cleaner. Do not use sharp objects, brushes or sharp abrasives. Do not place in a dishwasher. Clean the coffee outlet regularly with a soft damp cloth.
+
+[Manual07_47]
+
+The maintenance unit can be removed in separate pieces for easy cleaning.
+
+[Manual07_48]
+
+# Troubleshooting
+
+[Manual07_49]
+[Manual07_49 Figure description: The image shows a troubleshooting table divided into two sections, English above and French below. The table has a left column for the problem and a right column for the solution. English problems include: "No light indicator", "No coffee, no water", "Coffee comes out very slowly", "Coffee is not hot enough", "Capsule area is leaking (water in capsule container)", "Irregular blinking", and "No coffee, just water runs out (despite inserted capsule)". The corresponding solutions include checking the mains, plug, voltage and fuse; filling the water tank; descaling if necessary; preheating the cup; positioning the capsule correctly; sending the appliance for repair; or calling the Nespresso Club. The lower French section gives the same troubleshooting information in French.]
+
+| Problem | Solution |
+|---|---|
+| No light indicator. | Check the mains, plug, voltage, and fuse. In case of problems, call the Nespresso Club. |
+| No coffee, no water. | Fill the water tank. Descale if necessary. |
+| Coffee comes out very slowly. | Flow speed depends on the coffee variety. Descale if necessary. |
+| Coffee is not hot enough. | Preheat the cup. Descale if necessary. |
+| Capsule area is leaking, with water in the capsule container. | Position the capsule correctly. If leakage occurs, call the Nespresso Club. |
+| Irregular blinking. | Send the appliance for repair or call the Nespresso Club. |
+| No coffee, just water runs out, despite inserted capsule. | In case of problems, call the Nespresso Club. |
+
+# Contact the Club
+
+Should you need any additional information, in case of problems, or simply to seek advice, call the Club.
+
+Contact details for your nearest Club can be found in the «Welcome to» folder in your machine box.
+
+# Disposal and Environmental Protection
+
+Packaging materials and the appliance contain recyclable materials. Your appliance contains valuable materials that can be recovered or recycled. Separation of the remaining waste materials into different types facilitates the recycling of valuable raw materials. Leave the appliance at a collection point. You can obtain information on disposal from your local authorities.
+
+# Ecolaboration: ecolaboration.com
+
+We have committed to buying coffee of the very highest quality grown in a way that is respectful of the environment and farming communities.
+
+Since 2003, we have been working together with the Rainforest Alliance developing our program. We chose aluminium as the material for our capsules because it protects the coffee and aromas of the Grand Cru. Aluminium is also infinitely recyclable, without losing any of its qualities. The manufacturer is committed to designing and making appliances that are innovative, high-performing and user friendly. Now we are engineering environmental benefits into the design of our new and future machine ranges.
+

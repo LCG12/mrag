@@ -1,0 +1,672 @@
+# 空调用户手册
+
+使用本机前，请仔细阅读本手册并妥善保存，以备日后查阅。
+
+类型：变频式。
+
+# 节能小贴士
+
+以下小贴士有助于你使用空调时最大限度降低耗电量。遵循以下说明，可让空调运行更高效：
+
+- 室内切勿过度制冷，这不仅有害健康，还会增加耗电量。
+- 开启空调时，用百叶窗或窗帘遮挡阳光。
+- 开启空调时，将门窗紧闭。
+- 上下或左右调节出风方向，实现室内空气循环。
+- 短时间内想要快速制冷或制热，可调高风扇转速。
+- 长时间使用空调会导致室内空气质量下降，需定期开窗通风。
+- 每两周清洁一次空气滤网，滤网积攒的灰尘和杂质会堵塞风道，削弱制冷 / 除湿效果。
+
+# 存档信息
+
+请将购物小票装订在此页，如需证明购买日期或享受保修服务时可作凭证。在此填写型号和序列号：
+
+型号：
+
+序列号：
+
+可在每台设备侧面的标签上找到上述信息。
+
+经销商名称：
+
+购买日期：
+
+# 重要安全说明
+
+使用本设备前，请阅读所有说明。
+
+请始终遵守以下注意事项，避免发生危险情况，确保产品发挥最佳性能。
+
+警告
+
+若无视以下指示，可能导致严重伤亡。
+
+注意
+
+若无视以下指示，可能导致轻微受伤或产品损坏。
+
+# 警告：安装须知
+
+- 非专业人员进行安装或维修，可能会对本人及他人造成危险。
+- 安装必须符合当地建筑规范，若无当地规范，则需符合《国家电气规范》NFPA 70/ANSI C1-1003 现行版本及《加拿大电气规范》第一部分 CSA C.22.1。
+- 本手册所载信息仅供熟悉安全操作流程、配备适当工具和测试仪器的专业维修技术人员使用。
+- 若未仔细阅读并遵守本手册中的所有说明，可能导致设备故障、财产损失、人身伤害甚至死亡。
+- 使用符合空调额定参数的标准断路器和保险丝，否则可能导致触电或产品故障。
+- 安装或移机时，请联系授权服务中心，否则可能导致严重受伤或产品故障。
+- 务必使用带接地端子的电源插头和插座，否则可能导致触电或产品故障。
+- 妥善安装控制箱的面板和盖板，否则可能导致爆炸或火灾。
+- 使用空调前，需安装专用电源插座和断路器，否则可能导致触电或产品故障。
+- 切勿改装或延长电源线，若电源线出现刮擦、脱皮或老化现象，必须及时更换，否则可能引发火灾或触电。
+- 拆包或安装空调时需小心操作，否则可能导致严重受伤或产品故障。
+- 切勿将空调安装在不稳固的表面或有坠落风险的位置，否则可能导致死亡、严重受伤或产品故障。
+
+# 警告：操作须知
+
+- 空气湿度极高或门窗敞开时，切勿让空调长时间运行，否则可能导致产品故障。
+- 空调运行时，确保电源线未被拉扯或损坏，否则可能引发火灾、触电或产品故障。
+- 切勿在电源线上放置任何物品，否则可能导致触电或产品故障。
+- 切勿通过插拔电源插头的方式开关空调，否则可能引发火灾或触电。
+- 切勿用湿手触摸、操作或维修空调，否则可能导致触电或产品故障。
+- 切勿在电源线附近放置加热器或其他取暖设备，否则可能引发火灾、触电或产品故障。
+- 切勿让水渗入空调内部，否则可能导致爆炸或火灾。
+- 切勿将汽油、苯、稀释剂等易燃物品放在空调附近，否则可能导致爆炸或火灾。
+- 切勿在狭小且不通风的空间内长时间使用空调，需定期通风，否则可能导致爆炸或火灾。
+- 发生燃气泄漏时，需充分通风后再使用空调，否则可能导致爆炸或火灾。
+- 若空调发出异响、异味或冒烟，立即拔下电源插头，否则可能导致爆炸或火灾。
+- 遭遇暴雨或飓风时，停止运行空调并关闭窗户，若可能，在飓风来临前将产品从窗户拆下。
+- 打开前格栅后，切勿触摸静电滤网，否则可能导致触电或产品故障。
+- 若因洪水导致空调被水浸泡，立即联系授权服务中心，否则可能导致爆炸或火灾。
+- 注意防止水渗入产品内部。
+- 若同时使用本空调和加热器等取暖设备，务必充分通风，否则可能引发火灾、严重受伤或产品故障。
+- 清洁或维修空调时，关闭总电源并拔下电源插头，否则可能导致死亡、严重受伤或产品故障。
+- 长时间不使用空调时，拔下电源插头，否则可能导致产品故障。
+- 切勿在空调上放置任何物品，否则可能导致产品故障。
+- 内部清洁请联系授权服务中心或经销商，切勿使用腐蚀性强的清洁剂，此类清洁剂会损坏设备，还可能导致产品故障、火灾或触电。
+
+# 注意：安装须知
+
+- 空调安装或维修后，务必检查是否存在制冷剂泄漏，否则可能导致产品故障。
+- 正确安装排水管，确保冷凝水顺利排出，否则可能导致产品故障。
+- 安装产品时，务必保持水平。
+- 将空调安装在室外机噪音和废气不会影响邻居的位置，否则可能引发邻里纠纷。
+- 搬运设备时，至少需要两人操作或使用叉车，否则可能导致严重受伤。
+- 切勿将空调安装在直接受海风（盐雾）侵袭的位置，否则可能导致产品故障。
+
+# 注意：操作须知
+
+- 切勿让空调的冷风吹或热风吹向人、动物或植物，否则可能导致严重受伤。
+- 切勿将本产品用于特殊用途，如食品保鲜、艺术品保存等，本产品为家用空调，非精密制冷设备，违规使用可能导致死亡、火灾或触电。
+- 切勿堵塞进风口或出风口，否则可能导致爆炸或产品故障。
+- 清洁空调时，切勿使用强力清洁剂、溶剂或直接喷水，需使用软布擦拭，否则可能导致严重受伤或产品故障。
+- 拆卸空气滤网时，切勿触摸空调的金属部件，否则可能导致严重受伤或产品故障。
+- 切勿在空调上放置任何物品，否则可能导致产品故障。
+- 滤网清洁后，务必牢固安装，每两周清洁一次滤网，必要时可增加清洁频率。
+- 空调运行时，切勿将手或其他物品伸入进风口或出风口，否则可能导致触电。
+- 切勿饮用空调排出的水，否则可能导致严重的健康问题。
+- 在高处清洁、保养或维修空调时，使用稳固的凳子或梯子，否则可能导致严重受伤或产品故障。
+- 给遥控器装电池时，切勿将不同型号电池混用，也切勿将新电池与旧电池混用，否则可能导致产品故障。
+- 切勿对电池充电或拆解电池，否则可能导致爆炸、火灾或严重受伤。
+- 若遥控器电池漏液，立即停止使用，若衣物或皮肤接触到漏液，用清水冲洗，否则可能导致严重受伤。
+- 若不慎误食电池漏液，彻底漱口并立即就医，否则可能导致严重的健康问题。
+
+目录
+
+- 2 节能小贴士
+- 3 重要安全说明
+- 7 使用前准备
+- 7 部件介绍
+- 8 遥控器的使用
+- 9 安装电池
+- 9 安装遥控器支架
+- 10 基本功能
+- 10 室内制冷
+- 10 室内制热
+- 10 除湿
+- 11 室内换气
+- 11 调节风扇转速
+- 11 调节出风方向
+- 11 定时设置
+- 11 设置当前时间
+- 12 定时开机
+- 12 定时关机
+- 12 取消定时设置
+- 12 睡眠模式设置
+- 13 高级功能
+- 13 快速调节室内温度
+- 13 室内空气净化
+- 13 自清洁运行
+- 14 等离子净化运行
+- 14 自动运行
+- 15 自动转换运行
+- 15 节能制冷模式
+- 15 显示屏亮度调节
+- 16 无遥控器操作空调
+- 16 空调自动重启
+- 17 维护保养
+- 18 清洁空气滤网
+- 18 清洁 3M 多重防护滤网
+- 18 清洁等离子滤网
+- 19 故障排除
+- 19 自诊断功能
+- 19 报修前检查
+
+使用前准备
+
+# 部件介绍
+
+室内机
+
+[Manual01_0]
+[Manual01_0 图号描述: 该图片展示了一个室内机组（左上角可见部分文字“loor unit”）的结构示意图，通过引线标注了各个部件的英文名称。主要部件包括：顶部的“Air inlet”（进风口）；左侧的“Front grille”（前格栅）；内部上方的“3M Multi Protection Filter (Optional)”（3M多重保护过滤器，可选）；下方的“Air filter”（空气过滤器）；底部的“Air outlet”（出风口）；以及用于控制风向的“Air deflector (Vertical louver & Horizontal vane)”（空气导流板，含垂直百叶窗和水平叶片）。在导流板附近还标注了“Plasma filter”（等离子过滤器）。机身右侧面板从上至下依次标注了三个控制与显示部件：“On/ Off button”（开/关按钮）、“Signal receiver”（信号接收器）和“Operation lamp”（运行指示灯）。]
+
+| 部件 | 说明 |
+|---|---|
+| Air inlet | 进风口 |
+| Front grille | 前格栅 |
+| 3M Multi Protection Filter (Optional) | 3M 多重保护过滤器，可选 |
+| Air filter | 空气过滤器 |
+| Air outlet | 出风口 |
+| Air deflector (Vertical louver & Horizontal vane) | 空气导流板，含垂直百叶窗和水平叶片 |
+| Plasma filter | 等离子过滤器 |
+| On / Off button | 开 / 关按钮 |
+| Signal receiver | 信号接收器 |
+| Operation lamp | 运行指示灯 |
+
+* 功能会根据机型有所调整。
+
+注：操作指示灯的数量及其位置可能因空调型号而异。
+
+室外机
+
+[Manual01_1]
+[Manual01_1 图号描述: 该图展示了一台空调室外机的外部结构及连接管线示意图。机器主体呈长方体状，正面装有大型圆形风扇网罩。图中通过指引线标注了以下部件： 1. 左侧标注： - 'Air inlet vents'（空气入口通风口）：指向机器顶部的进风区域。 - 'Air outlet vents'（空气出口通风口）：指向机器正面的圆形风扇罩。 - 'Base plate'（底板）：指向机器底部的支撑底座。 2. 右侧连接管线： - 一组管线和电缆从机器右侧面的接口处延伸出来，垂直向下排列。 - 'Coolant piping'（冷却剂管道）：指向被保温材料包裹的较粗管道。 - 'Drain hose'（排水管）：指向一根较细的波纹状软管。 - 'Connection wire'（连接线）：指向连接机器的电缆线。]
+
+| 部件 | 说明 |
+|---|---|
+| Air inlet vents | 空气入口通风口 |
+| Air outlet vents | 空气出口通风口 |
+| Base plate | 底板 |
+| Coolant piping | 冷却剂管道 |
+| Drain hose | 排水管 |
+| Connection wire | 连接线 |
+
+* 功能会根据机型有所调整。
+
+# 遥控器的使用
+
+使用遥控器可更便捷地操作空调，附加功能的按键位于遥控器盖板下方。
+
+# 无线遥控器
+
+[air_conditioner_01]
+
+* 部分功能可能因机型不同而不支持。
+
+# 安装电池
+
+使用遥控器前，请先安装电池，适用电池型号为 7 号。
+
+1. 取下电池盖。
+
+[Manual01_2]
+
+2. 装入新电池，确保电池正、负极安装正确。
+
+[Manual01_3]
+
+3. 重新装上电池盖。
+
+注：若遥控器显示屏开始变暗，请更换电池。
+
+安装遥控器支架
+
+将支架安装在无阳光直射的位置，以保护遥控器。
+
+1. 选择安全且便于取用的位置。
+
+2. 用螺丝刀将两颗螺丝拧紧，固定支架。
+
+[Manual01_4]
+
+3. 将遥控器滑入支架中。
+
+[Manual01_5]
+
+# 操作方法
+
+将遥控器对准空调底部的信号接收器进行操作。
+
+[Manual01_6]
+
+注：若将遥控器对准其他电子设备，可能会对其进行操控，请务必将遥控器对准空调的信号接收器。
+
+注：为保证正常操作，用软布擦拭信号发射器和接收器。
+
+# 基本功能
+
+室内制冷（制冷模式）
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择制冷模式，显示屏上会显示雪花图标。
+
+[Manual01_7]
+
+3. 按下温度上升 / 下降键，设置所需温度，温度调节范围为 18–30 摄氏度。
+
+室内制热（制热模式）
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择制热模式，显示屏上会显示太阳图标。
+
+[Manual01_8]
+
+3. 按下温度上升 / 下降键，设置所需温度，温度调节范围为 16–30 摄氏度。
+
+注：单冷型机型不支持此功能。
+
+除湿（除湿模式）
+
+该模式可在高湿度环境或雨季去除多余湿气，防止霉菌滋生。此模式会自动调节室内温度和风扇转速，保持最佳湿度水平。
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择除湿模式，显示屏上会显示水滴图标。
+
+[Manual01_9]
+
+注：此模式下温度由系统自动调节，无法手动设置，且显示屏不会显示设定温度。
+
+室内换气（循环模式）
+
+该模式仅实现室内空气循环，不改变室内温度，循环模式下制冷指示灯亮起。
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择循环模式，显示屏上会显示风扇图标。
+
+[Manual01_10]
+
+3. 按下风速键调节风扇转速。
+
+# 调节风扇转速
+
+1. 反复按下风速键调节风扇转速，选择风向箭头图标可开启自然风模式，风扇转速自动调节。
+
+[Manual01_11]
+[Manual01_11 图号描述: 该图片展示了一个两列的表格，用于说明风速设置。表头左侧为“Remark”，右侧为“Speed”。表格内容从上到下依次为：第一行，左侧图标为风扇符号加五个竖条，右侧文字为“High”；第二行，左侧图标为风扇符号加四个竖条，右侧文字为“Medium-High”；第三行，左侧图标为风扇符号加三个竖条，右侧文字为“Medium”；第四行，左侧图标为风扇符号加两个竖条，右侧文字为“Medium-Low”；第五行，左侧图标为风扇符号加一个竖条，右侧文字为“Low”；第六行，左侧图标为波浪状风扇符号加五个竖条，右侧文字为“Natural Wind”。]
+
+| Remark | Speed |
+|---|---|
+| 风扇符号 + 五个竖条 | High |
+| 风扇符号 + 四个竖条 | Medium-High |
+| 风扇符号 + 三个竖条 | Medium |
+| 风扇符号 + 两个竖条 | Medium-Low |
+| 风扇符号 + 一个竖条 | Low |
+| 波浪状风扇符号 + 五个竖条 | Natural Wind |
+
+# 调节出风方向
+
+1. 左右调节出风方向时，按下对应按键选择所需方向，选择自动摆风图标可实现出风方向自动调节。
+
+2. 上下调节出风方向时，反复按下对应按键选择所需方向，选择自动摆风图标可实现出风方向自动调节。
+
+注：部分机型不支持上下调节出风方向。
+
+注：随意调节导风板可能导致产品故障。
+
+注：空调重启后，将按照之前设置的出风方向运行，导风板状态可能与遥控器显示图标不一致，此时可再次按下出风方向调节键进行调整。
+
+# 定时设置
+
+使用定时功能可节约能源，让空调更高效地运行。
+
+# 设置当前时间
+
+1. 按住设定 / 清除键 3 秒以上，显示屏底部的上午 / 下午图标开始闪烁。
+
+[Manual01_12]
+
+2. 按下上升 / 下降键调整分钟数。
+
+3. 按下设定 / 清除键完成设置。
+
+# 定时开机
+
+1. 按下定时开键，显示屏底部对应的图标开始闪烁。
+
+[Manual01_13]
+
+2. 按下上升 / 下降键调整分钟数。
+
+3. 按下设定 / 清除键完成设置。
+
+4. 定时设置完成后，显示屏会显示当前时间和定时开图标。
+
+# 定时关机
+
+1. 按下定时关键，显示屏底部对应的图标开始闪烁。
+
+[Manual01_14]
+
+2. 按下上升 / 下降键调整分钟数。
+
+3. 按下设定 / 清除键完成设置。
+
+4. 定时设置完成后，显示屏会显示当前时间和定时关图标。
+
+# 取消定时设置
+
+1. 按下设定 / 清除键，若要取消所有定时设置，直接按下设定 / 清除键即可。
+
+# 睡眠模式设置
+
+开启睡眠模式，可在入睡后让空调自动关机。
+
+1. 按下开 / 关键开启电源。
+
+2. 按下睡眠键。
+
+3. 按下上升 / 下降键选择定时时长（最长 7 小时）。
+
+4. 按下设定 / 清除键完成设置，睡眠模式下显示屏会显示对应图标。
+
+[Manual01_15]
+
+注：制冷和除湿模式下，为提升睡眠舒适度，空调运行 30 分钟后温度升高 1 摄氏度，再运行 30 分钟后温度再升高 1 摄氏度，最高较设定温度升高 2 摄氏度。
+
+# 高级功能
+
+本空调配备多种实用的高级功能。
+
+快速调节室内温度（极速制冷 / 制热模式）
+
+该模式可在夏季快速冷却室内空气，或在冬季快速提升室内温度。
+
+1. 按下开 / 关键开启电源。
+
+2. 按下极速键。
+
+[Manual01_16]
+
+- 极速制冷模式下，空调将以 18 摄氏度的温度强风出风 30 分钟。
+- 极速制热模式下，空调将以 30 摄氏度的温度强风出风 30 分钟。
+
+注：循环、自动或自动转换模式下，无法使用此功能。
+
+注：部分机型不支持此功能。
+
+室内空气净化
+
+自清洁运行
+
+制冷和除湿运行时，室内机内部会产生水汽，可使用自清洁功能去除水汽。
+
+1. 按下自清洁键，显示屏上会显示自清洁标识。
+
+[Manual01_17]
+
+- 若关闭电源，风扇将继续运行 30 分钟，对室内机内部进行清洁。
+
+注：自清洁功能运行时，部分按键无法使用。
+
+等离子净化运行
+
+本产品搭载的等离子滤网可彻底去除吸入空气中的微小污染物，输送洁净清新的空气。
+
+1. 按下开 / 关键开启电源。
+
+2. 按下等离子键，显示屏上会显示等离子标识。
+
+[Manual01_18]
+
+注：无需开启空调，直接按下等离子键即可使用该功能。
+
+注：等离子净化功能运行时，等离子灯和制冷灯将同时亮起。
+
+注：部分机型不支持此功能。
+
+自动运行（人工智能模式）
+
+# 单冷型机型
+
+此模式下，风扇转速和温度会根据室内温度自动调节。
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择自动运行模式。
+
+3. 若当前温度高于或低于所需温度，按下上升 / 下降键选择所需的运行代码。
+
+[Manual01_19]
+[Manual01_19 图号描述: 该图左侧为设备显示屏界面示意图，右侧为代码含义对照表。显示屏左上角显示Wi-Fi信号图标及电池电量图标；顶部中央显示一个内含“AI”字样的头部轮廓图标，下方悬挂一滴状物。屏幕中央显示温度计图标（旁带度数符号）及大数字“2”。屏幕底部通过横线分隔，下方显示“AM 12:00”及下方更大的“12:00”字样。右侧表格包含两列，表头分别为“Code”和“Description”。表格内容从上至下依次为：Code“2”对应Description“Cool”；Code“1”对应“Cool slightly”；Code“0”对应“Maintain room temperature”；Code“-1”对应“Heat slightly”；Code“-2”对应“Heat”。一个三角形箭头从屏幕中央的数字“2”指向表格第一行（Code 2, Description Cool），指示屏幕显示数值对应的模式含义。]
+
+| Code | Description |
+|---:|---|
+| 2 | Cool |
+| 1 | Cool slightly |
+| 0 | Maintain room temperature |
+| -1 | Heat slightly |
+| -2 | Heat |
+
+注：此模式下无法调节风扇转速，但可设置导风板自动摆风。
+
+注：部分机型不支持此功能。
+
+# 自动转换运行
+
+该模式会自动切换运行模式，将设定温度的波动控制在 2 摄氏度以内。
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择自动转换运行模式，显示屏上会显示对应标识。
+
+[Manual01_20]
+
+3. 按下上升 / 下降键设置所需温度，温度调节范围为 18 摄氏度（64 华氏度）–30 摄氏度（86 华氏度）。
+
+4. 反复按下风速键选择风扇转速。
+
+注：部分机型不支持此功能。
+
+# 节能制冷模式
+
+该模式可最大限度降低制冷时的耗电量，并将设定温度调节至最适宜的水平，打造更舒适的环境。
+
+1. 按下开 / 关键开启电源。
+
+2. 反复按下模式键，选择制冷模式。
+
+3. 按下节能键，显示屏上会显示节能标识。
+
+[Manual01_21]
+
+注：部分机型不支持此功能。
+
+显示屏亮度调节
+
+可调节室内机显示屏的亮度，按下亮度键，即可开启 / 关闭显示屏。
+
+注：部分机型不支持此功能。
+
+# 无遥控器操作空调
+
+遥控器无法使用时，可通过室内机的开 / 关键操作空调，此时风扇转速默认设为高速。
+
+1. 打开前盖板，轻轻掀起盖板两侧即可。
+
+[Manual01_22]
+
+* 功能会根据机型有所调整。
+
+2. 按下开 / 关键。
+
+[Manual01_23]
+
+* 功能会根据机型有所调整。
+
+- 冷暖型机型的运行模式会根据室内温度自动切换。
+
+[Manual01_24]
+[Manual01_24 图号描述: 该图片展示了一个三列四行的表格，表头背景为浅灰色，数据单元格背景为白色，由黑色网格线分隔。表头从左至右依次为：“Room temp.”、“Set temp.”、“Operation mode”。表格第一行数据：第一列显示“Below 21°C”，第二列显示“24°C”，第三列显示“Heating operation”。表格第二行数据：第一列显示“Above 21°C and below 24°C”，第二列显示“23°C”，第三列显示“Dehumidifying operation”。表格第三行数据：第一列显示“Above 24°C”，第二列显示“22°C”，第三列显示“Cooling operation”。部分较长文本在单元格内换行显示。]
+
+| Room temp. | Set temp. | Operation mode |
+|---|---|---|
+| Below 21°C | 24°C | Heating operation |
+| Above 21°C and below 24°C | 23°C | Dehumidifying operation |
+| Above 24°C | 22°C | Cooling operation |
+
+- 单冷型机型的温度将默认设为 22 摄氏度（71.6 华氏度）。
+
+# 空调自动重启
+
+停电后再次开启空调时，该功能可恢复之前的运行设置，此功能为工厂默认设置。
+
+# 关闭自动重启功能
+
+1. 打开前盖板，轻轻掀起盖板两侧即可。
+
+[Manual01_25]
+
+* 功能会根据机型有所调整。
+
+2. 按住开 / 关键 6 秒钟，设备会发出两声蜂鸣，指示灯闪烁 6 次。
+
+[Manual01_26]
+
+* 功能会根据机型有所调整。
+
+- 如需重新开启该功能，再次按住开 / 关键 6 秒钟即可，设备会发出两声蜂鸣，蓝色指示灯闪烁 4 次。
+
+注：若按住开 / 关键 3–5 秒而非 6 秒，空调将进入测试运行模式，该模式下空调会以强风制冷 18 分钟，之后恢复为工厂默认设置。
+
+维护保养
+
+定期清洁产品，以保持最佳运行性能，防止设备出现故障。
+
+* 部分配件可能因机型不同而未配备。
+
+# 3M 多重防护滤网
+
+[Manual01_27]
+
+* 功能会根据机型有所调整。
+
+[Manual01_28]
+[Manual01_28 图号描述: 该图片展示了一个三列的维护表格，表头背景为灰色，列出了不同部件的清洁间隔和方法。表格包含以下三列：'Item'（项目）、'Cleaning interval'（清洁间隔）和 'Cleaning method'（清洁方法）。表格具体内容如下： 1. 第一行：项目为 'Air filter'，清洁间隔为 '2 weeks'，清洁方法指示参见 'Cleaning air filter.'。 2. 第二行：项目为 '3M Multi Protection Filter'，清洁间隔为 '1 months'，清洁方法指示参见 'Cleaning the 3M Multi Protection Filter.'。 3. 第三行：项目为 'Plasma filter*'（带星号），清洁间隔为 '3 months'，清洁方法指示参见 'Cleaning the plasma filter.'。 4. 第四行：项目为 'Indoor unit surface'，清洁间隔为 'Regularly'，清洁方法说明为 'Use a soft, dry cloth. Do not use bleach or abrasives.'（使用柔软的干布。不要使用漂白剂或研磨剂）。 5. 第五行：项目为 'Outdoor unit'，清洁间隔为 'Regularly'，清洁方法说明为 'Use steam to clean the heat exchanger coils and the panel vents (consult with technician).'（使用蒸汽清洁热交换器盘管和面板通风口（咨询技术人员））。]
+
+| Item | Cleaning interval | Cleaning method |
+|---|---|---|
+| Air filter | 2 weeks | Cleaning air filter. |
+| 3M Multi Protection Filter | 1 month | Cleaning the 3M Multi Protection Filter. |
+| Plasma filter* | 3 months | Cleaning the plasma filter. |
+| Indoor unit surface | Regularly | Use a soft, dry cloth. Do not use bleach or abrasives. |
+| Outdoor unit | Regularly | Use steam to clean the heat exchanger coils and the panel vents (consult with technician). |
+
+注意
+
+- 进行任何维护操作前，请关闭电源并拔下电源线，否则可能导致触电。
+- 清洁滤网时，切勿使用 40 摄氏度以上的热水，以免造成滤网变形或变色。
+- 清洁滤网时，切勿使用挥发性物质，以免损坏产品表面。
+
+注：滤网的位置和形状可能因机型不同而有所差异。
+
+注：请定期清洁室外机的热交换器盘管，盘管积垢可能会降低运行效率，增加能耗。
+
+# 清洁空气滤网
+
+建议每两周清洁一次空气滤网，必要时可增加清洁频率。
+
+1. 关闭电源并拔下电源线。
+
+2. 打开前盖板，轻轻掀起盖板两侧即可。
+
+[Manual01_29]
+
+* 功能会根据机型有所调整。
+
+3. 握住空气滤网的把手，轻轻向上提起，将其从机身中取出。
+
+[Manual01_30]
+
+* 功能会根据机型有所调整。
+
+4. 用吸尘器清理滤网，或用温水冲洗，若滤网污垢较难清理，可在温水中加入洗涤剂清洗。
+
+5. 将滤网置于阴凉处晾干。
+
+# 清洁 3M 多重防护滤网
+
+1. 关闭电源并拔下电源线。
+
+2. 打开前盖板，取出空气滤网（详见“清洁空气滤网”）。
+
+3. 抽出 3M 多重防护滤网。
+
+[Manual01_31]
+
+* 功能会根据机型有所调整。
+
+4. 用吸尘器清理滤网污垢，切勿用水清洗 3M 多重防护滤网，以免造成滤网损坏。
+
+注：滤网的位置和形状可能因机型不同而有所差异。
+
+# 清洁等离子滤网
+
+1. 关闭电源并拔下电源线。
+
+2. 打开前盖板，取出空气滤网（详见“清洁空气滤网”）。
+
+3. 在 10 秒内取下等离子滤网。
+
+[Manual01_32]
+
+* 功能会根据机型有所调整。
+
+4. 用吸尘器清理滤网污垢，若污垢较难清理，可用温水冲洗。
+
+5. 将滤网置于阴凉处晾干。
+
+注：滤网的位置可能因机型不同而有所差异。
+
+注：部分机型可能未配备等离子滤网。
+
+# 故障排除
+
+自诊断功能
+
+本产品内置自诊断功能，若发生故障，室内机指示灯会以 2 秒为间隔闪烁，出现此情况请联系当地经销商或服务中心。
+
+# 报修前检查
+
+报修前，请先检查以下事项，若问题仍未解决，再联系当地服务中心。
+
+[Manual01_33]
+[Manual01_33 图号描述: 这是一张故障排除表格，包含三列，表头分别为 'Problem'（问题）、'Possible causes'（可能原因）和 'Corrective action'（纠正措施）。表格内容分为两大部分： 第一部分列出了四种严重故障情况，它们的 'Possible causes' 列合并显示为 '-'，'Corrective action' 列合并显示为同一条建议：'Turn off the air conditioner, unplug the power cord and contact the service center.'（关闭空调，拔掉电源线并联系服务中心）。这四种问题分别是： 1. 'There is a burning smell and a strange sound coming from the unit.'（机组发出烧焦味和奇怪的声音）。 2. 'Water leaks from the indoor unit even when the humidity level is low.'（即使湿度水平很低，室内机也会漏水）。 3. 'The power cord is damaged or generating excessive heat.'（电源线损坏或产生过多热量）。 4. 'A switch, a circuit breaker (safety, ground) or a fuse is not operated properly.'（开关、断路器（安全、接地）或保险丝操作不正常）。 第二部分针对问题 'The air conditioner does not work.'（空调不工作），列出了五种可能的原因及其对应的纠正措施： 1. 原因：'The air conditioner is unplugged.'（空调未插电）；措施：'Check whether the power cord is plugged into the outlet.'（检查电源线是否插入插座）。 2. 原因：'A fuse is blown or the power supply is blocked.'（保险丝烧断或电源被阻断）；措施：'Replace the fuse or check if the circuit breaker has tripped.'（更换保险丝或检查断路器是否跳闸）。 3. 原因：'A power failure has occurred.'（发生停电）；措施：'Turn off the air conditioner when a power failure occurs. When the power is restored, wait 3 minutes, and then turn on the air conditioner.'（发生停电时关闭空调。当电源恢复时，等待 3 分钟，然后打开空调）。 4. 原因：'The voltage is too high or too low.'（电压过高或过低）；措施：'Check if the circuit breaker has tripped.'（检查断路器是否跳闸）。 5. 原因：'The air conditioner turned off automatically at a preset time.'（空调在预设时间自动关闭）；措施：'Press the power button again.'（再次按下电源按钮）。]
+
+| Problem | Possible causes | Corrective action |
+|---|---|---|
+| There is a burning smell and a strange sound coming from the unit. | - | Turn off the air conditioner, unplug the power cord and contact the service center. |
+| Water leaks from the indoor unit even when the humidity level is low. | - | Turn off the air conditioner, unplug the power cord and contact the service center. |
+| The power cord is damaged or generating excessive heat. | - | Turn off the air conditioner, unplug the power cord and contact the service center. |
+| A switch, a circuit breaker (safety, ground) or a fuse is not operated properly. | - | Turn off the air conditioner, unplug the power cord and contact the service center. |
+| The air conditioner does not work. | The air conditioner is unplugged. | Check whether the power cord is plugged into the outlet. |
+| The air conditioner does not work. | A fuse is blown or the power supply is blocked. | Replace the fuse or check if the circuit breaker has tripped. |
+| The air conditioner does not work. | A power failure has occurred. | Turn off the air conditioner when a power failure occurs. When the power is restored, wait 3 minutes, and then turn on the air conditioner. |
+| The air conditioner does not work. | The voltage is too high or too low. | Check if the circuit breaker has tripped. |
+| The air conditioner does not work. | The air conditioner turned off automatically at a preset time. | Press the power button again. |
+
+[Manual01_34]
+[Manual01_34 图号描述: 这是一张故障排除表格，包含三列，表头分别为“Problem”（问题）、“Possible causes”（可能原因）和“Corrective action”（纠正措施）。表格内容如下： 1. **问题列第一大类**：“The air conditioner does not generate cool air.”（空调不产生冷气）。该问题对应七组原因和措施： - 原因：“Air is not circulating properly.”（空气循环不畅）；措施：“Make sure that there are no curtains, blinds or furniture blocking the front of the air conditioner.”（确保没有窗帘、百叶窗或家具阻挡空调前方）。 - 原因：“The air filter is dirty.”（空气滤网脏）；措施：“Clean the air filter once every 2 weeks. See “Cleaning Air Filter” for more information.”（每2周清洗一次空气滤网。参见“清洗空气滤网”获取更多信息）。 - 原因：“The room temperature is too high.”（室温过高）；措施：“In summer, it may take some time to cool indoor air. In this case, select the jet cool operation to cool indoor air quickly.”（夏季冷却室内空气可能需要时间。此时选择强力制冷模式以快速冷却）。 - 原因：“Cold air is escaping from the room.”（冷气从房间逸出）；措施：“Make sure that no cold air is escaping through ventilation points in the room.”（确保没有冷气通过房间通风点逸出）。 - 原因：“The desired temperature is higher than the set temperature.”（期望温度高于设定温度）；措施：“Set the desired temperature to a level lower than the current temperature.”（将期望温度设定为低于当前温度的水平）。 - 原因：“There is a heating source nearby.”（附近有热源）；措施：“Avoid using a heat generator such as an electric oven or a gas burner while the air conditioner is in operation.”（空调运行时避免使用电烤箱或燃气灶等发热设备）。 - 原因：“Air circulation operation is selected.”（选择了空气循环模式）；措施：“In the air circulation operation, air blows from the air conditioner without cooling or heating the indoor air. Switch the operation mode to the cooling operation.”（在空气循环模式下，空调吹出的风不制冷也不制热。请切换至制冷模式）。 2. **问题列第二行**：“It is not possible to adjust the fan speed.”（无法调节风速）。 - 原因：“The auto operation, jet operation or dehumidifying operation is selected.”（选择了自动、强力或除湿模式）。 - 措施：“In some operation modes, such as the jet or dehumidifying operation modes, you cannot adjust the fan speed. Select an operation mode in which you can adjust the fan speed.”（在某些模式下如强力或除湿模式，无法调节风速。请选择可调节风速的模式）。 3. **问题列第三行**：“It is not possible to adjust the temperature.”（无法调节温度）。 - 原因：“The air circulation operation or jet operation is selected.”（选择了空气循环或强力模式）。 - 措施：“In some operation modes, such as the air circulation or jet operation mode, you cannot adjust the temperature. Select an operation mode in which you can adjust the temperature.”（在某些模式下如空气循环或强力模式，无法调节温度。请选择可调节温度的模式）。]
+
+| Problem | Possible causes | Corrective action |
+|---|---|---|
+| The air conditioner does not generate cool air. | Air is not circulating properly. | Make sure that there are no curtains, blinds or furniture blocking the front of the air conditioner. |
+| The air conditioner does not generate cool air. | The air filter is dirty. | Clean the air filter once every 2 weeks. See “Cleaning Air Filter” for more information. |
+| The air conditioner does not generate cool air. | The room temperature is too high. | In summer, it may take some time to cool indoor air. In this case, select the jet cool operation to cool indoor air quickly. |
+| The air conditioner does not generate cool air. | Cold air is escaping from the room. | Make sure that no cold air is escaping through ventilation points in the room. |
+| The air conditioner does not generate cool air. | The desired temperature is higher than the set temperature. | Set the desired temperature to a level lower than the current temperature. |
+| The air conditioner does not generate cool air. | There is a heating source nearby. | Avoid using a heat generator such as an electric oven or a gas burner while the air conditioner is in operation. |
+| The air conditioner does not generate cool air. | Air circulation operation is selected. | In the air circulation operation, air blows from the air conditioner without cooling or heating the indoor air. Switch the operation mode to the cooling operation. |
+| It is not possible to adjust the fan speed. | The auto operation, jet operation or dehumidifying operation is selected. | In some operation modes, such as the jet or dehumidifying operation modes, you cannot adjust the fan speed. Select an operation mode in which you can adjust the fan speed. |
+| It is not possible to adjust the temperature. | The air circulation operation or jet operation is selected. | In some operation modes, such as the air circulation or jet operation mode, you cannot adjust the temperature. Select an operation mode in which you can adjust the temperature. |

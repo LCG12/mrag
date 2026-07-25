@@ -1,0 +1,296 @@
+# Washing Machine Owner's Instructions
+
+【Manual39_0】
+
+# Features
+
+**Powerful washing by large pulsator:**
+
+This washing machine has a big pulsator so that it can wash evenly.
+
+**Three-way lint filter:**
+
+The three-way lint filter strains off lint efficiently during washing, so you can wash laundry cleanly.
+
+**Normal or soft selector:**
+
+You can wash laundry efficiently by two types: Normal or Soft.
+
+# Cautions
+
+Be sure that the washer is grounded.
+
+To avoid electrical shock, use a metal pipe for the ground connection. Do not ground the washer with gas pipes or telephone lines to avoid the dangers of explosion or lightning strike.
+
+【Manual39_1】
+
+Do not put your hands into the spin dryer basket during spinning.
+
+【washing_machine1_02】
+
+Your fingers can be caught by spinning laundry and damaged.
+
+Never allow children to operate or play with the washer. Children playing with the washer may accidentally fall into the washing tub.
+
+【washing_machine1_01】
+
+Disconnect the power cord from the power supply after use.
+
+Ventilation openings must not be obstructed by carpeting when the washing machine is installed on a carpeted floor.
+
+If the supply cord of this appliance is damaged, it must only be replaced by an authorized technician appointed by the manufacturer, because special purpose tools are required.
+
+Warning: to avoid overfilling and damage, this appliance must be filled with the operator present using a moderate water supply pressure only.
+
+# Precautions When Operating
+
+**Do not use excessively hot water.**
+
+Plastic parts may be deformed or damaged. Clothing may also be deformed or discolored.
+
+**Before washing, empty all pockets.**
+
+If nails or pins remain in pockets, they may damage the washer or clothes.
+
+**Close the water tap a little if the water pressure is too high.**
+
+**Be sure to cover laundry with the inner cover before spinning.**
+
+This prevents laundry from being tossed out and damaged.
+
+**To avoid water splashes, close the wash tub lid.**
+
+**Never splash water on the control panel.**
+
+# Description of Parts and Control Panel
+
+**Description of parts:**
+
+- Water drain option hose with pump
+- Overflow filter
+- Lint filter
+- Wash tub
+- Wash tub lid: be sure to keep the lid closed during washing and spinning.
+- Spin dryer lid: when you open this lid while the spin basket is spinning, the spinning will be stopped by the brake system.
+- Spin dryer basket
+- Spin dryer hatch
+- Power cord: the plug shape may not correspond with this drawing.
+- Drain filter
+- Earth wire
+- Water drain hose without pump
+- Pulsator
+
+【Manual39_2】
+
+**Control panel:**
+
+1. Wash selector: to select wash action.
+2. Wash timer: to set the wash time, 1-15 minutes.
+3. Cycle selector: to set Washing / Rinsing or Draining.
+4. Spin dry timer: to set the spin time, 1-5 minutes or 1-10 minutes.
+5. Water selector: during washing, the water guide knob should be selected to Wash. During spin rinsing, the water guide knob should be selected to Spin.
+
+【Manual39_3】
+
+# Washing Procedure
+
+**To wash:**
+
+1. Before starting washing, check the following:
+   - Connect the water supply hose and open the water tap.
+   - Lay the drain hose down toward a sinkhole, in case there is no drain pump.
+   - Place the drain hose in a sink or bath, in case there is a drain pump.
+   - Connect the power cord to the power supply outlet.
+
+2. Set the Wash Selector knob to the desired mode.
+
+【Manual39_4】
+
+3. Set the Water Selector knob to Wash.
+
+【Manual39_5】
+
+4. Set the Cycle Selector knob to Wash / Rinse. In case of drain pump model, set to Wash.
+
+【Manual39_6】
+
+5. Fill water in the wash tub and add detergent.
+
+【Manual39_7】
+
+6. Load laundry in the wash tub and fill water to the “H” high water level.
+
+【Manual39_8】
+
+7. Set the Wash Timer to 1-15 minutes.
+
+【Manual39_9】
+
+8. After washing, set the Cycle Selector knob to Drain.
+
+【Manual39_10】
+
+**Spin dry:**
+
+1. Transfer the clothes into the spin basket and arrange the clothes evenly.
+
+【Manual39_11】
+
+2. Be sure to attach the safety cover and close the inner lid.
+
+【Manual39_12】
+
+3. Close the spin dryer lid.
+
+【Manual39_13】
+
+4. Set the Spin Dry Timer to 1-5 minutes or 1-10 minutes.
+
+【Manual39_14】
+
+【Manual39_15】
+
+**Rinsing:**
+
+1. Set the Cycle Selector knob to Wash / Rinse. In case of drain pump model, set to Wash.
+
+【Manual39_16】
+
+2. Supply the proper amount of water so as not to overflow the top of the washing tub.
+3. Set the Wash Timer to 2-3 minutes.
+
+【Manual39_17】
+
+4. Drain the water. Set the Cycle Selector knob to Drain.
+
+【Manual39_18】
+
+5. Repeat this cycle until the drain water is clean, usually 2-3 cycles.
+
+**Overflow rinse:**
+
+1. Keep supplying water. Adjust water pressure to ensure that the amount of water supplied does not exceed the amount of water drained.
+
+【Manual39_19】
+
+2. Set the Wash Timer to 6-8 minutes.
+
+【Manual39_20】
+
+3. As soon as the Wash Timer shuts off, turn off the water tap.
+
+【Manual39_21】
+
+4. Set the Cycle Selector knob to Drain.
+
+【Manual39_22】
+
+**Additional rinse:**
+
+【Manual39_23】
+
+# Installation
+
+**Environment:**
+
+**Leave some space.**
+
+Leave at least 15 cm between the washer and the wall.
+
+**Place the washer on a sturdy, flat surface.**
+
+If the washer is placed on an uneven or weak surface, noise or vibration may occur.
+
+**Never install the washer near water.**
+
+Do not place the washer in steamy rooms or where the washer is directly exposed to rain. Moisture may destroy the electrical insulation and cause an electrical shock hazard.
+
+**Avoid direct sunlight or heating devices.**
+
+As plastic and electrical components are affected by direct heat, never place the washer near heaters, boilers, etc. Do not place under direct sunlight.
+
+Install the drain hose about 70-80 cm above the ground for pump model.
+
+【Manual39_24】
+
+**Connecting the drain hose:**
+
+1. Before connecting the drain hose, remove the cover (a) from the drain hole.
+2. After pressing the joint ring (b), insert the drain hose (c) to the drain direction.
+
+【Manual39_25】
+
+**Mounting the legs:**
+
+Lay down the washer with its back facing downward. Insert four legs into the leg mounting sections of the base corners of the main body.
+
+Insert the claw of the leg into the square hole of the leg mounting section, and push the leg in the arrow direction as shown in the figure until it clicks.
+
+【Manual39_26】
+
+# Cleaning the Machine
+
+**Cleaning the lint filter:**
+
+If the dregs are filled up in the lint filter after finishing the wash, push down and pull it out as shown in the figure. Remove the collected lint and rinse the filter net.
+
+【Manual39_27】
+
+**Drain filter:**
+
+In case of incomplete drain, disassemble the drain filter with a screwdriver (+), and remove lint from the filter as shown in the figure.
+
+【Manual39_28】
+
+**Overflow filter:**
+
+Pull the upper side of the overflow filter with two fingers into the hole in the direction of the arrow as shown in the figure.
+
+【Manual39_29】
+
+**Cleaning the wash tub:**
+
+First, fill water in the wash tub to the level indicated, then drain water from the wash tub while operating the wash cycle for 1-2 minutes. Close the wash tub lid.
+
+**Cleaning the washer body:**
+
+Wipe off stains on the cabinet and operation panel with a soft cloth. Do not use benzene, thinners, cleanser, or wax, and do not scrub the washer with a brush. Painted surfaces or plastic parts will be damaged.
+
+# Laundry Guide
+
+**Washing time:**
+
+【Manual39_30】
+
+**Spin dry time:**
+
+【Manual39_31】
+
+**Detergent:**
+
+The amount of detergent is average. Follow the detergent instructions printed on the package for the amount of detergent. Choose the amount of detergent depending on the fabric type.
+
+【Manual39_32】
+
+# Maintenance
+
+**When you load the laundry into the spin basket:**
+
+Press the laundry evenly and put the safety cover into the spin basket drum as shown in the figure.
+
+【Manual39_33】
+
+**To pick out clothing which has fallen between the basket and tub:**
+
+For safety, pull the power supply plug out of the socket.
+
+1. Disassemble the screw from the spin dryer hatch.
+2. The spin dryer hatch is fixed to the brim by the concave and convex parts at two places. Expand the concave and convex parts, and pull up the spin dryer hatch to remove it.
+3. Remove the clothing.
+4. Close the spin dryer hatch. Push in the hatch firmly until the catch at the front is engaged securely.
+
+【Manual39_34】
+
+# Troubleshooting
+
+【Manual39_35】

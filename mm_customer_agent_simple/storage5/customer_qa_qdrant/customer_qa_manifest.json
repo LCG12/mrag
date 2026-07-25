@@ -1,0 +1,12 @@
+{
+  "qa_path": "D:\\temp-du\\extra\\mmagentic_rag-完结\\3mmagenic_rag\\combined_qa_generic_optimized.json",
+  "qa_sha256": "6cfc43dc11ab88b6d9009cc6ab3ba8468582fd3ef6bafba3147ed16db05669c5",
+  "raw_count": 348,
+  "deduped_count": 65,
+  "indexed_count": 283,
+  "embedding_model": "text-embedding-v4",
+  "embedding_dim": 1024,
+  "qdrant_path": "storage5/customer_qa_qdrant",
+  "query_collection": "customer_qa_query",
+  "answer_collection": "customer_qa_answer"
+}
