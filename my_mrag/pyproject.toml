@@ -17,6 +17,9 @@ dependencies = [
 models = [
     "openai>=1.0.0",
 ]
+local-embeddings = [
+    "sentence-transformers>=5.0,<6",
+]
 graph = [
     "lightrag-hku<1.5",
     "openai>=1.0.0",

@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 data/
+qwen3-embedding-0.6b/

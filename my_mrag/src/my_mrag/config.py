@@ -20,6 +20,7 @@ class Settings:
     parsed_dir: Path
     assets_dir: Path
     analysis_dir: Path
+    lightrag_dir: Path
 
     @classmethod
     def load(cls, data_dir: str | Path | None = None) -> "Settings":
@@ -35,9 +36,11 @@ class Settings:
             parsed_dir=data_path / "parsed",
             assets_dir=data_path / "assets",
             analysis_dir=data_path / "analysis",
+            lightrag_dir=data_path / "lightrag",
         )
 
     def ensure_directories(self) -> None:
         self.parsed_dir.mkdir(parents=True, exist_ok=True)
         self.assets_dir.mkdir(parents=True, exist_ok=True)
         self.analysis_dir.mkdir(parents=True, exist_ok=True)
+        self.lightrag_dir.mkdir(parents=True, exist_ok=True)

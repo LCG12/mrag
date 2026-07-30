@@ -46,6 +46,7 @@ def _settings(tmp_path: Path) -> Settings:
         parsed_dir=data_dir / "parsed",
         assets_dir=data_dir / "assets",
         analysis_dir=data_dir / "analysis",
+        lightrag_dir=data_dir / "lightrag",
     )
 
 

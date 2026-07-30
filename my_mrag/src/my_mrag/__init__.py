@@ -2,6 +2,7 @@
 
 from .pipeline import IngestionPipeline
 from .multimodal import MultimodalPipeline
+from .indexing import IndexingReport, LightRAGIndexer
 from .schemas import (
     AnalysisRequest,
     BoundingBox,
@@ -19,6 +20,8 @@ __all__ = [
     "ContentType",
     "EntityInfo",
     "IngestionPipeline",
+    "IndexingReport",
+    "LightRAGIndexer",
     "ModalAnalysis",
     "MultimodalPipeline",
     "ParsedDocument",

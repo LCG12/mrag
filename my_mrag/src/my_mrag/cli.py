@@ -7,10 +7,12 @@ from pathlib import Path
 import sys
 
 from my_mrag.config import Settings
+from my_mrag.indexing import LightRAGIndexer
 from my_mrag.models import OpenAICompatibleModel
 from my_mrag.multimodal import MultimodalPipeline
 from my_mrag.pipeline import IngestionPipeline
 from my_mrag.schemas import ContentType
+from my_mrag.storage import JsonAnalysisStore
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -47,6 +49,34 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Call configured models and persist multimodal analyses.",
     )
     _add_multimodal_arguments(analyze_command)
+
+    index_command = subparsers.add_parser(
+        "index",
+        help="Write completed multimodal analyses into LightRAG.",
+    )
+    index_command.add_argument("document_id")
+
+    embedding_command = subparsers.add_parser(
+        "embedding-check",
+        help="Load the configured embedding model and compare sample texts.",
+    )
+    embedding_command.add_argument(
+        "--query",
+        default="How does RP-ReAct separate planning from tool execution?",
+    )
+    embedding_command.add_argument(
+        "--positive",
+        default=(
+            "RP-ReAct separates a high-level Reasoner Planner from "
+            "low-level proxy agents that execute tool calls."
+        ),
+    )
+    embedding_command.add_argument(
+        "--negative",
+        default=(
+            "The paper reports evaluation results across several datasets."
+        ),
+    )
     return parser
 
 
@@ -83,7 +113,7 @@ def main() -> None:
     args = _build_parser().parse_args()
     settings = Settings.load(args.data_dir)
     pipeline = IngestionPipeline(settings)
-
+    
     if args.command == "parse":
         document, stored_path = pipeline.ingest(args.file)
         summary = {
@@ -141,7 +171,7 @@ def main() -> None:
                 for request in requests
             ],
         }
-    else:
+    elif args.command == "analyze":
         document = pipeline.load(args.document_id)
         multimodal = MultimodalPipeline(
             settings=settings,
@@ -180,5 +210,68 @@ def main() -> None:
                 for analysis in analyses
             ],
         }
+    elif args.command == "index":
+        from my_mrag.lightrag_runtime import open_lightrag
+
+        document = pipeline.load(args.document_id)
+        analyses = JsonAnalysisStore(
+            settings.analysis_dir
+        ).load_analyses(document.document_id)
+
+        async def run_index() -> dict[str, object]:
+            async with open_lightrag(settings) as rag:
+                report = await LightRAGIndexer(rag).index(
+                    document,
+                    analyses,
+                )
+            return report.to_dict()
+
+        summary = asyncio.run(run_index())
+    else:
+        from my_mrag.embeddings import (
+            build_embedding_model,
+            load_embedding_settings,
+        )
+
+        async def run_embedding_check() -> dict[str, object]:
+            import numpy as np
+
+            embedding_settings = load_embedding_settings(settings)
+            embedding_model = build_embedding_model(embedding_settings)
+            query_vector = await embedding_model(
+                [args.query],
+                context="query",
+            )
+            document_vectors = await embedding_model(
+                [args.positive, args.negative],
+                context="document",
+            )
+            similarities = document_vectors @ query_vector[0]
+            return {
+                "config": embedding_settings.public_dict(),
+                "resolved_device": getattr(
+                    embedding_model,
+                    "resolved_device",
+                    "remote",
+                ),
+                "shape": list(query_vector.shape),
+                "query_norm": round(
+                    float(np.linalg.norm(query_vector[0])),
+                    6,
+                ),
+                "positive_similarity": round(
+                    float(similarities[0]),
+                    6,
+                ),
+                "negative_similarity": round(
+                    float(similarities[1]),
+                    6,
+                ),
+                "ranking_is_correct": bool(
+                    similarities[0] > similarities[1]
+                ),
+            }
+
+        summary = asyncio.run(run_embedding_check())
 
     print(json.dumps(summary, ensure_ascii=False, indent=2))
