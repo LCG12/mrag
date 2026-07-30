@@ -1,17 +1,13 @@
-import argparse
-
-from src.config import get_settings
-from src.llm import DeepSeekClient
+from pathlib import Path
+import sys
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Minimal DeepSeek chat example")
-    parser.add_argument("--question", required=True, help="要发送给模型的问题")
-    args = parser.parse_args()
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_DIR = PROJECT_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-    settings = get_settings()
-    client = DeepSeekClient(settings)
-    print(client.answer(args.question))
+from my_mrag.cli import main
 
 
 if __name__ == "__main__":
