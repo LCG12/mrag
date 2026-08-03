@@ -8,11 +8,17 @@ from typing import Any
 import fitz
 
 from my_mrag.schemas import BoundingBox, ContentItem, ContentType, ParsedDocument
-from my_mrag.utils import file_sha256, safe_extension, stable_id
+from my_mrag.utils import file_sha256, stable_id
 
 
 _CAPTION_RE = re.compile(
     r"^\s*(?:fig(?:ure)?\.?\s*\d+|图\s*\d+|table\s*\d+|表\s*\d+)",
+    re.IGNORECASE,
+)
+
+
+_FIGURE_CAPTION_RE = re.compile(
+    r"^\s*fig(?:ure)?\.?\s*\d+",
     re.IGNORECASE,
 )
 
@@ -24,6 +30,14 @@ class _PageCandidate:
     text: str = ""
     asset_path: str | None = None
     metadata: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class _EmbeddedImage:
+    bbox: tuple[float, float, float, float]
+    source_block_idx: int
+    width: int
+    height: int
 
 
 class PyMuPDFParser:
@@ -107,6 +121,7 @@ class PyMuPDFParser:
         )
         table_boxes = [candidate.bbox for candidate in table_candidates]
         candidates = list(table_candidates)
+        embedded_images: list[_EmbeddedImage] = []
 
         page_dict = page.get_text("dict", sort=True)
         for block_idx, block in enumerate(page_dict.get("blocks", [])):
@@ -137,32 +152,171 @@ class PyMuPDFParser:
                 height = int(block.get("height") or 0)
                 display_width = max(bbox[2] - bbox[0], 0)
                 display_height = max(bbox[3] - bbox[1], 0)
-                if display_width < 16 or display_height < 16:
+                if display_width < 2 or display_height < 2:
                     continue
-                extension = safe_extension(block.get("ext"), default="png")
-                image_id = stable_id(
-                    "image", document_id, page_idx, block_idx, len(image_bytes)
-                )
-                image_path = asset_dir / f"{image_id}.{extension}"
-                if not image_path.exists():
-                    image_path.write_bytes(image_bytes)
-                candidates.append(
-                    _PageCandidate(
-                        type=ContentType.IMAGE,
+                embedded_images.append(
+                    _EmbeddedImage(
                         bbox=bbox,
-                        asset_path=str(image_path.resolve()),
-                        metadata={
-                            "source_block_idx": block_idx,
-                            "width": width,
-                            "height": height,
-                            "display_width": round(display_width, 3),
-                            "display_height": round(display_height, 3),
-                            "extension": extension,
-                        },
+                        source_block_idx=block_idx,
+                        width=width,
+                        height=height,
                     )
                 )
 
+        figure_captions = [
+            candidate
+            for candidate in candidates
+            if candidate.type == ContentType.TEXT
+            and _FIGURE_CAPTION_RE.match(candidate.text)
+        ]
+        candidates.extend(
+            self._extract_image_groups(
+                page=page,
+                page_idx=page_idx,
+                document_id=document_id,
+                asset_dir=asset_dir,
+                images=embedded_images,
+                figure_captions=figure_captions,
+                table_boxes=table_boxes,
+            )
+        )
+
         return self._sort_reading_order(candidates, page.rect)
+
+    def _extract_image_groups(
+        self,
+        page: fitz.Page,
+        page_idx: int,
+        document_id: str,
+        asset_dir: Path,
+        images: list[_EmbeddedImage],
+        figure_captions: list[_PageCandidate],
+        table_boxes: list[tuple[float, float, float, float]],
+    ) -> list[_PageCandidate]:
+        candidates: list[_PageCandidate] = []
+        for group_idx, group in enumerate(self._group_images(images)):
+            bbox = self._union_image_boxes(group)
+            if self._mostly_inside_any(bbox, table_boxes):
+                continue
+
+            caption = self._nearest_caption_below(bbox, figure_captions)
+            previous_caption = self._nearest_caption_above(bbox, figure_captions)
+            clip = fitz.Rect(bbox)
+            if len(group) > 1 and caption is not None:
+                clip.x0 = min(clip.x0, caption.bbox[0])
+                clip.x1 = max(clip.x1, caption.bbox[2])
+
+            padding = 4.0
+            padded_y0 = clip.y0 - padding
+            if previous_caption is not None:
+                padded_y0 = max(padded_y0, previous_caption.bbox[3] + 1)
+            clip = fitz.Rect(
+                max(page.rect.x0, clip.x0 - padding),
+                max(page.rect.y0, padded_y0),
+                min(page.rect.x1, clip.x1 + padding),
+                min(page.rect.y1, clip.y1 + padding),
+            )
+            image_id = stable_id(
+                "image",
+                document_id,
+                page_idx,
+                group_idx,
+                tuple(round(value, 3) for value in clip),
+                tuple(image.source_block_idx for image in group),
+            )
+            image_path = asset_dir / f"{image_id}.png"
+            if not image_path.exists():
+                pixmap = page.get_pixmap(
+                    matrix=fitz.Matrix(2, 2),
+                    clip=clip,
+                    alpha=False,
+                    annots=False,
+                )
+                pixmap.save(image_path)
+            else:
+                pixmap = fitz.Pixmap(image_path)
+
+            candidates.append(
+                _PageCandidate(
+                    type=ContentType.IMAGE,
+                    bbox=tuple(float(value) for value in clip),
+                    asset_path=str(image_path.resolve()),
+                    metadata={
+                        "extraction_method": "page_region",
+                        "source_block_indexes": [
+                            image.source_block_idx for image in group
+                        ],
+                        "embedded_image_count": len(group),
+                        "width": pixmap.width,
+                        "height": pixmap.height,
+                        "display_width": round(clip.width, 3),
+                        "display_height": round(clip.height, 3),
+                        "extension": "png",
+                    },
+                )
+            )
+        return candidates
+
+    @staticmethod
+    def _group_images(
+        images: list[_EmbeddedImage],
+        vertical_gap: float = 12.0,
+    ) -> list[list[_EmbeddedImage]]:
+        """Group image layers occupying the same vertical figure region."""
+        groups: list[list[_EmbeddedImage]] = []
+        for image in sorted(images, key=lambda item: (item.bbox[1], item.bbox[0])):
+            if not groups:
+                groups.append([image])
+                continue
+            current_bottom = max(item.bbox[3] for item in groups[-1])
+            if image.bbox[1] <= current_bottom + vertical_gap:
+                groups[-1].append(image)
+            else:
+                groups.append([image])
+        return groups
+
+    @staticmethod
+    def _union_image_boxes(
+        images: list[_EmbeddedImage],
+    ) -> tuple[float, float, float, float]:
+        return (
+            min(image.bbox[0] for image in images),
+            min(image.bbox[1] for image in images),
+            max(image.bbox[2] for image in images),
+            max(image.bbox[3] for image in images),
+        )
+
+    @staticmethod
+    def _nearest_caption_below(
+        bbox: tuple[float, float, float, float],
+        captions: list[_PageCandidate],
+        max_distance: float = 180.0,
+    ) -> _PageCandidate | None:
+        matches = [
+            caption
+            for caption in captions
+            if caption.bbox[1] >= bbox[3] - 2
+            and caption.bbox[1] - bbox[3] <= max_distance
+        ]
+        if not matches:
+            return None
+        return min(matches, key=lambda caption: caption.bbox[1] - bbox[3])
+
+    @staticmethod
+    def _nearest_caption_above(
+        bbox: tuple[float, float, float, float],
+        captions: list[_PageCandidate],
+        max_distance: float = 40.0,
+    ) -> _PageCandidate | None:
+        matches = [
+            caption
+            for caption in captions
+            if caption.bbox[3] <= bbox[1] + 2
+            and bbox[1] - caption.bbox[3] <= max_distance
+        ]
+        if not matches:
+            return None
+        return min(matches, key=lambda caption: bbox[1] - caption.bbox[3])
 
     def _extract_tables(
         self,
@@ -328,18 +482,25 @@ class PyMuPDFParser:
         for item in items:
             if item.type not in (ContentType.IMAGE, ContentType.TABLE) or not item.bbox:
                 continue
-            matches: list[tuple[float, ContentItem]] = []
+            above: list[tuple[float, ContentItem]] = []
+            below: list[tuple[float, ContentItem]] = []
             for text_item in text_items:
                 if text_item.page_idx != item.page_idx or not text_item.bbox:
                     continue
                 if not _CAPTION_RE.match(text_item.text):
                     continue
-                vertical_distance = min(
-                    abs(text_item.bbox.y0 - item.bbox.y1),
-                    abs(item.bbox.y0 - text_item.bbox.y1),
-                )
-                if vertical_distance <= 140:
-                    matches.append((vertical_distance, text_item))
+                if text_item.bbox.y0 >= item.bbox.y1 - 2:
+                    distance = max(text_item.bbox.y0 - item.bbox.y1, 0)
+                    if distance <= 140:
+                        below.append((distance, text_item))
+                elif text_item.bbox.y1 <= item.bbox.y0 + 2:
+                    distance = max(item.bbox.y0 - text_item.bbox.y1, 0)
+                    if distance <= 140:
+                        above.append((distance, text_item))
+
+            preferred = below if item.type == ContentType.IMAGE else above
+            fallback = above if item.type == ContentType.IMAGE else below
+            matches = preferred or fallback
             if matches:
                 matches.sort(key=lambda pair: pair[0])
                 item.captions = [matches[0][1].text]

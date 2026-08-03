@@ -8,11 +8,15 @@ import pytest
 
 from my_mrag.indexing import LightRAGIndexer
 from my_mrag.schemas import (
+    ChunkKnowledge,
     ContentItem,
     ContentType,
     EntityInfo,
+    KnowledgeEntity,
+    KnowledgeRelationship,
     ModalAnalysis,
     ParsedDocument,
+    TextChunk,
 )
 
 
@@ -101,6 +105,126 @@ def test_indexer_rejects_duplicate_analyses() -> None:
     indexer = LightRAGIndexer(FakeCustomKGStore())
     with pytest.raises(ValueError, match="Duplicate analysis"):
         indexer.build_payload(_document(), [_analysis(), _analysis()])
+
+
+def test_indexer_accepts_text_chunks_without_multimodal_analysis() -> None:
+    document = _document()
+    document.items.append(
+        ContentItem(
+            item_id="item-text",
+            document_id="doc-1",
+            type=ContentType.TEXT,
+            page_idx=0,
+            order_idx=1,
+            text="The planner retrieves evidence before execution.",
+        )
+    )
+    text_chunk = TextChunk(
+        chunk_id="chunk-text-1",
+        document_id="doc-1",
+        chunk_index=0,
+        text="The planner retrieves evidence before execution.",
+        token_count=8,
+        page_start=0,
+        page_end=0,
+        source_order_start=1,
+        source_item_ids=("item-text",),
+        section_path=("2 METHODS",),
+    )
+    store = FakeCustomKGStore()
+
+    report = asyncio.run(
+        LightRAGIndexer(store).index(document, [], [text_chunk])
+    )
+
+    assert report.chunk_count == 1
+    assert report.text_chunk_count == 1
+    assert report.multimodal_chunk_count == 0
+    payload, full_doc_id = store.calls[0]
+    assert full_doc_id == "doc-1"
+    assert payload["chunks"][0]["source_id"] == "chunk-text-1"
+    assert payload["chunks"][0]["content"].startswith(
+        "Section: 2 METHODS"
+    )
+    assert payload["entities"][0]["entity_name"] == "DOCUMENT::doc-1"
+
+
+def test_indexer_merges_text_entities_and_relationships() -> None:
+    document = _document()
+    document.items.append(
+        ContentItem(
+            item_id="item-text",
+            document_id="doc-1",
+            type=ContentType.TEXT,
+            page_idx=0,
+            order_idx=1,
+            text="RAG-Anything constructs a dual graph.",
+        )
+    )
+    text_chunk = TextChunk(
+        chunk_id="chunk-text-1",
+        document_id="doc-1",
+        chunk_index=0,
+        text="RAG-Anything constructs a dual graph.",
+        token_count=7,
+        page_start=0,
+        page_end=0,
+        source_order_start=1,
+        source_item_ids=("item-text",),
+        section_path=("2 METHODS",),
+    )
+    knowledge = ChunkKnowledge(
+        chunk_id=text_chunk.chunk_id,
+        document_id="doc-1",
+        chunk_index=0,
+        entities=(
+            KnowledgeEntity(
+                entity_name="RAG-Anything",
+                entity_type="method",
+                description="A multimodal retrieval framework.",
+            ),
+            KnowledgeEntity(
+                entity_name="Dual-Graph Construction",
+                entity_type="component",
+                description="Builds cross-modal and modality-aware graphs.",
+            ),
+        ),
+        relationships=(
+            KnowledgeRelationship(
+                source_entity="RAG-Anything",
+                target_entity="Dual-Graph Construction",
+                description="The framework uses dual-graph construction.",
+                keywords=("uses", "constructs"),
+                weight=9,
+            ),
+        ),
+        model_name="fake-text-model",
+    )
+    store = FakeCustomKGStore()
+
+    report = asyncio.run(
+        LightRAGIndexer(store).index(
+            document,
+            [],
+            [text_chunk],
+            [knowledge],
+        )
+    )
+
+    assert report.knowledge_chunk_count == 1
+    assert report.text_entity_count == 2
+    assert report.text_relationship_count == 1
+    payload, _ = store.calls[0]
+    entities = {
+        entity["entity_name"]: entity for entity in payload["entities"]
+    }
+    assert entities["RAG-Anything"]["source_id"] == "chunk-text-1"
+    assert entities["Dual-Graph Construction"]["entity_type"] == "component"
+    relationship = payload["relationships"][0]
+    assert relationship["src_id"] == "RAG-Anything"
+    assert relationship["tgt_id"] == "Dual-Graph Construction"
+    assert relationship["source_id"] == "chunk-text-1"
+    assert relationship["keywords"] == "uses,constructs"
 
 
 def test_real_lightrag_storages_receive_custom_kg(tmp_path: Path) -> None:

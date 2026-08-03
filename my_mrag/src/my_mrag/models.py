@@ -26,6 +26,8 @@ class OpenAICompatibleModel:
         base_url: str,
         model_name: str,
         max_tokens: int = 1600,
+        json_mode: bool = False,
+        thinking: bool | None = None,
     ):
         if not api_key:
             raise ValueError("api_key is required")
@@ -35,6 +37,8 @@ class OpenAICompatibleModel:
         self.base_url = base_url
         self.model_name = model_name
         self.max_tokens = max_tokens
+        self.json_mode = json_mode
+        self.thinking = thinking
 
     @classmethod
     def from_env(
@@ -42,6 +46,9 @@ class OpenAICompatibleModel:
         prefix: str,
         *,
         required: bool = True,
+        max_tokens: int | None = None,
+        json_mode: bool = False,
+        thinking: bool | None = None,
     ) -> "OpenAICompatibleModel | None":
         api_key = os.getenv(f"{prefix}_API_KEY", "").strip()
         base_url = os.getenv(f"{prefix}_BASE_URL", "").strip()
@@ -52,10 +59,22 @@ class OpenAICompatibleModel:
                     f"{prefix}_API_KEY and {prefix}_MODEL must be configured"
                 )
             return None
+        configured_max_tokens = os.getenv(
+            f"{prefix}_MAX_TOKENS",
+            "",
+        ).strip()
+        resolved_max_tokens = (
+            int(configured_max_tokens)
+            if configured_max_tokens
+            else (max_tokens or 1600)
+        )
         return cls(
             api_key=api_key,
             base_url=base_url,
             model_name=model_name,
+            max_tokens=resolved_max_tokens,
+            json_mode=json_mode,
+            thinking=thinking,
         )
 
     async def complete(self, request: AnalysisRequest) -> str:
@@ -84,15 +103,27 @@ class OpenAICompatibleModel:
         else:
             content = request.prompt
 
-        client = AsyncOpenAI(api_key=self.api_key, base_url=self.base_url or None)
-        response = await client.chat.completions.create(
-            model=self.model_name,
-            messages=[
+        parameters: dict[str, object] = {
+            "model": self.model_name,
+            "messages": [
                 {"role": "system", "content": request.system_prompt},
                 {"role": "user", "content": content},
             ],
-            max_tokens=self.max_tokens,
-        )
+            "max_tokens": self.max_tokens,
+        }
+        if self.json_mode:
+            parameters["response_format"] = {"type": "json_object"}
+        if self.thinking is not None:
+            parameters["extra_body"] = {
+                "thinking": {
+                    "type": "enabled" if self.thinking else "disabled"
+                }
+            }
+        async with AsyncOpenAI(
+            api_key=self.api_key,
+            base_url=self.base_url or None,
+        ) as client:
+            response = await client.chat.completions.create(**parameters)
         return response.choices[0].message.content or ""
 
     @staticmethod

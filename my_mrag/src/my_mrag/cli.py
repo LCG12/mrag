@@ -6,13 +6,28 @@ import json
 from pathlib import Path
 import sys
 
+from my_mrag.chunking import (
+    ApproximateTokenizer,
+    TextChunkConfig,
+    TextChunker,
+    load_text_tokenizer,
+)
 from my_mrag.config import Settings
 from my_mrag.indexing import LightRAGIndexer
+from my_mrag.knowledge import (
+    KnowledgeExtractionConfig,
+    KnowledgeExtractionPipeline,
+)
 from my_mrag.models import OpenAICompatibleModel
 from my_mrag.multimodal import MultimodalPipeline
 from my_mrag.pipeline import IngestionPipeline
+from my_mrag.retrieval import RetrievalConfig, RetrievalPipeline
 from my_mrag.schemas import ContentType
-from my_mrag.storage import JsonAnalysisStore
+from my_mrag.storage import (
+    JsonAnalysisStore,
+    JsonKnowledgeStore,
+    JsonTextChunkStore,
+)
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -33,6 +48,56 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     inspect_command.add_argument("document_id")
 
+    chunk_command = subparsers.add_parser(
+        "chunk",
+        help="Build and persist retrieval-ready chunks from parsed text.",
+    )
+    chunk_command.add_argument("document_id")
+    chunk_command.add_argument("--target-tokens", type=int, default=600)
+    chunk_command.add_argument("--max-tokens", type=int, default=800)
+    chunk_command.add_argument("--overlap-tokens", type=int, default=100)
+    chunk_command.add_argument(
+        "--approximate-tokenizer",
+        action="store_true",
+        help="Do not load the configured local Hugging Face tokenizer.",
+    )
+
+    extract_kg_command = subparsers.add_parser(
+        "extract-kg",
+        help="Extract and persist entities and relationships from text chunks.",
+    )
+    extract_kg_command.add_argument("document_id")
+    extract_kg_command.add_argument(
+        "--chunk-id",
+        action="append",
+        dest="chunk_ids",
+        help="Only extract this chunk. May be repeated.",
+    )
+    extract_kg_command.add_argument(
+        "--limit",
+        type=int,
+        help="Process at most this many selected chunks.",
+    )
+    extract_kg_command.add_argument("--concurrency", type=int, default=2)
+    extract_kg_command.add_argument("--retries", type=int, default=1)
+    extract_kg_command.add_argument("--max-entities", type=int, default=12)
+    extract_kg_command.add_argument(
+        "--max-relationships",
+        type=int,
+        default=16,
+    )
+    extract_kg_command.add_argument(
+        "--model-max-tokens",
+        type=int,
+        default=4096,
+        help="Maximum completion tokens for each extraction request.",
+    )
+    extract_kg_command.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-extract chunks that already have saved results.",
+    )
+
     prepare_command = subparsers.add_parser(
         "prepare",
         help="Build and persist multimodal model requests without calling a model.",
@@ -52,9 +117,25 @@ def _build_parser() -> argparse.ArgumentParser:
 
     index_command = subparsers.add_parser(
         "index",
-        help="Write completed multimodal analyses into LightRAG.",
+        help="Write chunks, extracted knowledge, and analyses into LightRAG.",
     )
     index_command.add_argument("document_id")
+
+    retrieve_command = subparsers.add_parser(
+        "retrieve",
+        help="Retrieve source-resolved chunk and graph evidence.",
+    )
+    retrieve_command.add_argument("query")
+    retrieve_command.add_argument("--document-id")
+    retrieve_command.add_argument("--top-k", type=int, default=8)
+    retrieve_command.add_argument("--entity-top-k", type=int, default=5)
+    retrieve_command.add_argument("--relationship-top-k", type=int, default=5)
+    retrieve_command.add_argument("--graph-depth", type=int, default=1)
+    retrieve_command.add_argument(
+        "--full-content",
+        action="store_true",
+        help="Print complete retrieved chunk content.",
+    )
 
     embedding_command = subparsers.add_parser(
         "embedding-check",
@@ -143,6 +224,174 @@ def main() -> None:
                 for item in document.items[:8]
             ],
         }
+    elif args.command == "chunk":
+        document = pipeline.load(args.document_id)
+        tokenizer = (
+            ApproximateTokenizer()
+            if args.approximate_tokenizer
+            else load_text_tokenizer(settings)
+        )
+        chunker = TextChunker(
+            config=TextChunkConfig(
+                target_tokens=args.target_tokens,
+                max_tokens=args.max_tokens,
+                overlap_tokens=args.overlap_tokens,
+            ),
+            tokenizer=tokenizer,
+        )
+        chunks = chunker.chunk(document)
+        stored_path = JsonTextChunkStore(settings.chunks_dir).save(
+            document.document_id,
+            chunks,
+        )
+        token_counts = [chunk.token_count for chunk in chunks]
+        summary = {
+            "document_id": document.document_id,
+            "chunk_count": len(chunks),
+            "tokenizer": tokenizer.name,
+            "token_counts": {
+                "minimum": min(token_counts, default=0),
+                "maximum": max(token_counts, default=0),
+                "average": (
+                    round(sum(token_counts) / len(token_counts), 2)
+                    if token_counts
+                    else 0
+                ),
+            },
+            "stored_path": str(stored_path),
+            "sample_chunks": [
+                {
+                    "chunk_id": chunk.chunk_id,
+                    "chunk_index": chunk.chunk_index,
+                    "section_path": list(chunk.section_path),
+                    "pages": [chunk.page_start + 1, chunk.page_end + 1],
+                    "token_count": chunk.token_count,
+                    "source_item_ids": list(chunk.source_item_ids),
+                    "text": chunk.text[:300],
+                }
+                for chunk in chunks[:3]
+            ],
+        }
+    elif args.command == "extract-kg":
+        document = pipeline.load(args.document_id)
+        chunk_store = JsonTextChunkStore(settings.chunks_dir)
+        if not chunk_store.exists(document.document_id):
+            raise FileNotFoundError(
+                f"No text chunks found for {document.document_id}. "
+                "Run 'chunk' first."
+            )
+        chunks = chunk_store.load(document.document_id)
+        chunks_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+        selected_ids = set(args.chunk_ids or ())
+        missing_ids = selected_ids - chunks_by_id.keys()
+        if missing_ids:
+            raise KeyError(f"Requested chunks not found: {sorted(missing_ids)}")
+        selected = [
+            chunk
+            for chunk in chunks
+            if not selected_ids or chunk.chunk_id in selected_ids
+        ]
+
+        knowledge_store = JsonKnowledgeStore(settings.knowledge_dir)
+        existing = (
+            knowledge_store.load(document.document_id)
+            if knowledge_store.exists(document.document_id)
+            else []
+        )
+        existing = [
+            extraction
+            for extraction in existing
+            if extraction.chunk_id in chunks_by_id
+        ]
+        existing_ids = {extraction.chunk_id for extraction in existing}
+        if not args.force:
+            selected = [
+                chunk for chunk in selected if chunk.chunk_id not in existing_ids
+            ]
+        if args.limit is not None:
+            if args.limit <= 0:
+                raise ValueError("limit must be positive")
+            selected = selected[: args.limit]
+
+        merged = {item.chunk_id: item for item in existing}
+        extracted = []
+        if selected:
+            if args.model_max_tokens <= 0:
+                raise ValueError("model-max-tokens must be positive")
+            model = OpenAICompatibleModel.from_env(
+                "DEEPSEEK",
+                max_tokens=args.model_max_tokens,
+                json_mode=True,
+                thinking=False,
+            )
+            assert model is not None
+            extractor = KnowledgeExtractionPipeline(
+                model,
+                KnowledgeExtractionConfig(
+                    max_entities=args.max_entities,
+                    max_relationships=args.max_relationships,
+                    concurrency=args.concurrency,
+                    retries=args.retries,
+                ),
+            )
+
+            async def run_extraction_batches() -> None:
+                for start in range(0, len(selected), args.concurrency):
+                    batch = selected[start : start + args.concurrency]
+                    batch_results = await extractor.extract(batch)
+                    extracted.extend(batch_results)
+                    merged.update(
+                        {item.chunk_id: item for item in batch_results}
+                    )
+                    checkpoint = sorted(
+                        merged.values(),
+                        key=lambda extraction: extraction.chunk_index,
+                    )
+                    knowledge_store.save(document.document_id, checkpoint)
+
+            asyncio.run(run_extraction_batches())
+
+        all_extractions = sorted(
+            merged.values(),
+            key=lambda extraction: extraction.chunk_index,
+        )
+        stored_path = knowledge_store.save(
+            document.document_id,
+            all_extractions,
+        )
+        summary = {
+            "document_id": document.document_id,
+            "selected_chunk_count": len(selected),
+            "new_extraction_count": len(extracted),
+            "saved_extraction_count": len(all_extractions),
+            "entity_count": sum(
+                len(extraction.entities)
+                for extraction in all_extractions
+            ),
+            "relationship_count": sum(
+                len(extraction.relationships)
+                for extraction in all_extractions
+            ),
+            "stored_path": str(stored_path),
+            "sample_extractions": [
+                {
+                    "chunk_id": extraction.chunk_id,
+                    "chunk_index": extraction.chunk_index,
+                    "model_name": extraction.model_name,
+                    "entities": [
+                        entity.entity_name for entity in extraction.entities
+                    ],
+                    "relationships": [
+                        (
+                            f"{relationship.source_entity} -> "
+                            f"{relationship.target_entity}"
+                        )
+                        for relationship in extraction.relationships
+                    ],
+                }
+                for extraction in extracted[:5]
+            ],
+        }
     elif args.command == "prepare":
         document = pipeline.load(args.document_id)
         multimodal = MultimodalPipeline(settings=settings)
@@ -214,19 +463,76 @@ def main() -> None:
         from my_mrag.lightrag_runtime import open_lightrag
 
         document = pipeline.load(args.document_id)
-        analyses = JsonAnalysisStore(
-            settings.analysis_dir
-        ).load_analyses(document.document_id)
+        analysis_store = JsonAnalysisStore(settings.analysis_dir)
+        chunk_store = JsonTextChunkStore(settings.chunks_dir)
+        knowledge_store = JsonKnowledgeStore(settings.knowledge_dir)
+        analyses = (
+            analysis_store.load_analyses(document.document_id)
+            if analysis_store.exists(document.document_id)
+            else []
+        )
+        text_chunks = (
+            chunk_store.load(document.document_id)
+            if chunk_store.exists(document.document_id)
+            else []
+        )
+        knowledge = (
+            knowledge_store.load(document.document_id)
+            if knowledge_store.exists(document.document_id)
+            else []
+        )
+        if not analyses and not text_chunks:
+            raise FileNotFoundError(
+                "No text chunks or multimodal analyses found for "
+                f"{document.document_id}. Run 'chunk' and/or 'analyze' first."
+            )
 
         async def run_index() -> dict[str, object]:
             async with open_lightrag(settings) as rag:
                 report = await LightRAGIndexer(rag).index(
                     document,
                     analyses,
+                    text_chunks,
+                    knowledge,
                 )
             return report.to_dict()
 
         summary = asyncio.run(run_index())
+    elif args.command == "retrieve":
+        from my_mrag.lightrag_runtime import open_lightrag
+
+        if args.document_id:
+            pipeline.load(args.document_id)
+
+        async def run_retrieval() -> dict[str, object]:
+            async with open_lightrag(settings) as rag:
+                result = await RetrievalPipeline(
+                    rag,
+                    settings,
+                    RetrievalConfig(
+                        chunk_top_k=args.top_k,
+                        entity_top_k=args.entity_top_k,
+                        relationship_top_k=args.relationship_top_k,
+                        final_top_k=args.top_k,
+                        graph_depth=args.graph_depth,
+                    ),
+                ).retrieve(
+                    args.query,
+                    document_id=args.document_id,
+                )
+            payload = result.to_dict()
+            if not args.full_content:
+                for chunk in payload["chunks"]:
+                    content = str(chunk["content"])
+                    chunk["content"] = content[:600]
+            payload["counts"] = {
+                "chunks": len(result.chunks),
+                "entities": len(result.entities),
+                "relationships": len(result.relationships),
+            }
+            return payload
+
+        summary = asyncio.run(run_retrieval())
     else:
         from my_mrag.embeddings import (
             build_embedding_model,

@@ -100,6 +100,234 @@ class ParsedDocument:
 
 
 @dataclass(frozen=True)
+class TextChunk:
+    """One retrieval-ready chunk derived from ordered text items."""
+
+    chunk_id: str
+    document_id: str
+    chunk_index: int
+    text: str
+    token_count: int
+    page_start: int
+    page_end: int
+    source_order_start: int
+    source_item_ids: tuple[str, ...]
+    section_path: tuple[str, ...] = ()
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def index_text(self) -> str:
+        if not self.section_path:
+            return self.text
+        return (
+            f"Section: {' > '.join(self.section_path)}\n\n"
+            f"{self.text}"
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["source_item_ids"] = list(self.source_item_ids)
+        payload["section_path"] = list(self.section_path)
+        return payload
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "TextChunk":
+        data = dict(payload)
+        data["source_item_ids"] = tuple(data.get("source_item_ids") or ())
+        data["section_path"] = tuple(data.get("section_path") or ())
+        data["metadata"] = dict(data.get("metadata") or {})
+        return cls(**data)
+
+
+@dataclass(frozen=True)
+class KnowledgeEntity:
+    """One canonical entity extracted from a text chunk."""
+
+    entity_name: str
+    entity_type: str
+    description: str
+
+    def __post_init__(self) -> None:
+        if not self.entity_name.strip():
+            raise ValueError("Knowledge entity name cannot be empty")
+        if not self.entity_type.strip():
+            raise ValueError("Knowledge entity type cannot be empty")
+        if not self.description.strip():
+            raise ValueError("Knowledge entity description cannot be empty")
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "KnowledgeEntity":
+        return cls(
+            entity_name=str(payload["entity_name"]).strip(),
+            entity_type=str(payload["entity_type"]).strip().lower(),
+            description=str(payload["description"]).strip(),
+        )
+
+
+@dataclass(frozen=True)
+class KnowledgeRelationship:
+    """One evidence-backed relation between two extracted entities."""
+
+    source_entity: str
+    target_entity: str
+    description: str
+    keywords: tuple[str, ...] = ()
+    weight: float = 1.0
+
+    def __post_init__(self) -> None:
+        if not self.source_entity.strip() or not self.target_entity.strip():
+            raise ValueError("Knowledge relationship endpoints cannot be empty")
+        if not self.description.strip():
+            raise ValueError("Knowledge relationship description cannot be empty")
+        if self.weight <= 0:
+            raise ValueError("Knowledge relationship weight must be positive")
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["keywords"] = list(self.keywords)
+        return payload
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "KnowledgeRelationship":
+        raw_keywords = payload.get("keywords") or ()
+        if isinstance(raw_keywords, str):
+            raw_keywords = raw_keywords.split(",")
+        return cls(
+            source_entity=str(payload["source_entity"]).strip(),
+            target_entity=str(payload["target_entity"]).strip(),
+            description=str(payload["description"]).strip(),
+            keywords=tuple(
+                str(keyword).strip()
+                for keyword in raw_keywords
+                if str(keyword).strip()
+            ),
+            weight=float(payload.get("weight") or 1.0),
+        )
+
+
+@dataclass(frozen=True)
+class ChunkKnowledge:
+    """Structured entities and relationships extracted from one text chunk."""
+
+    chunk_id: str
+    document_id: str
+    chunk_index: int
+    entities: tuple[KnowledgeEntity, ...] = ()
+    relationships: tuple[KnowledgeRelationship, ...] = ()
+    model_name: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "chunk_id": self.chunk_id,
+            "document_id": self.document_id,
+            "chunk_index": self.chunk_index,
+            "entities": [asdict(entity) for entity in self.entities],
+            "relationships": [
+                relationship.to_dict()
+                for relationship in self.relationships
+            ],
+            "model_name": self.model_name,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "ChunkKnowledge":
+        return cls(
+            chunk_id=str(payload["chunk_id"]),
+            document_id=str(payload["document_id"]),
+            chunk_index=int(payload["chunk_index"]),
+            entities=tuple(
+                KnowledgeEntity.from_dict(entity)
+                for entity in payload.get("entities", [])
+            ),
+            relationships=tuple(
+                KnowledgeRelationship.from_dict(relationship)
+                for relationship in payload.get("relationships", [])
+            ),
+            model_name=str(payload.get("model_name") or ""),
+        )
+
+
+@dataclass(frozen=True)
+class RetrievedChunk:
+    """One source-resolved chunk returned by hybrid retrieval."""
+
+    chunk_id: str
+    score: float
+    content: str
+    document_id: str = ""
+    source_id: str = ""
+    file_path: str = ""
+    chunk_order_index: int = 0
+    page_start: int | None = None
+    page_end: int | None = None
+    section_path: tuple[str, ...] = ()
+    content_type: str = "text"
+    asset_path: str | None = None
+    captions: tuple[str, ...] = ()
+    channels: tuple[str, ...] = ()
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["section_path"] = list(self.section_path)
+        payload["captions"] = list(self.captions)
+        payload["channels"] = list(self.channels)
+        return payload
+
+
+@dataclass(frozen=True)
+class RetrievedEntity:
+    entity_name: str
+    entity_type: str
+    description: str
+    score: float
+    source_chunk_ids: tuple[str, ...] = ()
+    channels: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["source_chunk_ids"] = list(self.source_chunk_ids)
+        payload["channels"] = list(self.channels)
+        return payload
+
+
+@dataclass(frozen=True)
+class RetrievedRelationship:
+    source_entity: str
+    target_entity: str
+    description: str
+    keywords: str
+    score: float
+    weight: float = 1.0
+    source_chunk_ids: tuple[str, ...] = ()
+    channels: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["source_chunk_ids"] = list(self.source_chunk_ids)
+        payload["channels"] = list(self.channels)
+        return payload
+
+
+@dataclass(frozen=True)
+class RetrievalResult:
+    query: str
+    chunks: tuple[RetrievedChunk, ...] = ()
+    entities: tuple[RetrievedEntity, ...] = ()
+    relationships: tuple[RetrievedRelationship, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "query": self.query,
+            "chunks": [chunk.to_dict() for chunk in self.chunks],
+            "entities": [entity.to_dict() for entity in self.entities],
+            "relationships": [
+                relationship.to_dict()
+                for relationship in self.relationships
+            ],
+        }
+
+
+@dataclass(frozen=True)
 class EntityInfo:
     """Entity generated from one multimodal item."""
 

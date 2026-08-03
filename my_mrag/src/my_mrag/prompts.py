@@ -87,3 +87,53 @@ EQUATION_CHUNK = """Mathematical Equation Analysis:
 - Format: {equation_format}
 
 Mathematical Analysis: {description}"""
+
+
+KNOWLEDGE_EXTRACTION_SYSTEM = (
+    "You are a scientific knowledge graph curator. Extract only entities and "
+    "relationships explicitly supported by the supplied research-paper text. "
+    "Return strict JSON and do not add commentary."
+)
+
+KNOWLEDGE_EXTRACTION_PROMPT = """Extract a compact knowledge graph from this text chunk.
+
+Document context:
+- Chunk ID: {chunk_id}
+- Pages: {page_start}-{page_end}
+- Section: {section_path}
+
+<source_text>
+{text}
+</source_text>
+
+Rules:
+1. Extract at most {max_entities} important entities. Prefer named methods,
+   models, datasets, tasks, metrics, components, concepts, and findings.
+2. Preserve official names and use the same canonical name everywhere.
+3. Descriptions must state what the source text says, not outside knowledge.
+4. Extract at most {max_relationships} explicit, useful relationships.
+5. Every relationship endpoint must exactly match an entity_name in entities.
+6. Do not create relationships for mere co-occurrence.
+7. Weight is an evidence-strength score from 1.0 to 10.0.
+8. Return only one JSON object matching this structure:
+{{
+  "entities": [
+    {{
+      "entity_name": "canonical entity name",
+      "entity_type": "method|model|dataset|task|metric|component|concept|finding|organization|person|other",
+      "description": "concise evidence-grounded description"
+    }}
+  ],
+  "relationships": [
+    {{
+      "source_entity": "exact entity_name",
+      "target_entity": "exact entity_name",
+      "description": "how the source text relates them",
+      "keywords": ["short_relation_label"],
+      "weight": 5.0
+    }}
+  ]
+}}
+
+Use empty arrays when the chunk contains no meaningful scientific entities.
+"""

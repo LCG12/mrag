@@ -20,6 +20,8 @@ class Settings:
     parsed_dir: Path
     assets_dir: Path
     analysis_dir: Path
+    chunks_dir: Path
+    knowledge_dir: Path
     lightrag_dir: Path
 
     @classmethod
@@ -36,6 +38,8 @@ class Settings:
             parsed_dir=data_path / "parsed",
             assets_dir=data_path / "assets",
             analysis_dir=data_path / "analysis",
+            chunks_dir=data_path / "chunks",
+            knowledge_dir=data_path / "knowledge",
             lightrag_dir=data_path / "lightrag",
         )
 
@@ -43,4 +47,6 @@ class Settings:
         self.parsed_dir.mkdir(parents=True, exist_ok=True)
         self.assets_dir.mkdir(parents=True, exist_ok=True)
         self.analysis_dir.mkdir(parents=True, exist_ok=True)
+        self.chunks_dir.mkdir(parents=True, exist_ok=True)
+        self.knowledge_dir.mkdir(parents=True, exist_ok=True)
         self.lightrag_dir.mkdir(parents=True, exist_ok=True)
