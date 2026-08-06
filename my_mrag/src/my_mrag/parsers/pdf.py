@@ -23,6 +23,37 @@ _FIGURE_CAPTION_RE = re.compile(
 )
 
 
+_TABLE_CAPTION_RE = re.compile(
+    r"^\s*table\s+\d+\b",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+_EQUATION_NUMBER_RE = re.compile(
+    r"(?:^|\s)\(\s*(\d{1,3})\s*\)\s*$",
+)
+
+
+_MATH_FONT_MARKERS = (
+    "math",
+    "symbol",
+    "cmmi",
+    "cmsy",
+    "cmex",
+    "msam",
+    "msbm",
+    "stix",
+)
+
+
+_MATH_SYMBOLS = frozenset(
+    "=+×÷∈∉∪∩⊂⊆⊇≤≥≈≠→←↔∑∏∫√∥⋆∞∂∇{}[]^_"
+)
+
+
+_MATH_OPERATORS = frozenset("=+-<>^_×÷−·∑∏∫√≈≠≤≥")
+
+
 @dataclass
 class _PageCandidate:
     type: ContentType
@@ -40,8 +71,36 @@ class _EmbeddedImage:
     height: int
 
 
+@dataclass(frozen=True)
+class _TextFragment:
+    bbox: tuple[float, float, float, float]
+    text: str
+    source_block_idx: int
+    source_line_idx: int
+    math_character_count: int
+    character_count: int
+
+    @property
+    def math_ratio(self) -> float:
+        return self.math_character_count / max(self.character_count, 1)
+
+
+@dataclass(frozen=True)
+class _TextBlock:
+    bbox: tuple[float, float, float, float]
+    text: str
+    source_block_idx: int
+    math_character_count: int
+    character_count: int
+    fragments: tuple[_TextFragment, ...] = ()
+
+    @property
+    def math_ratio(self) -> float:
+        return self.math_character_count / max(self.character_count, 1)
+
+
 class PyMuPDFParser:
-    """Extract text blocks, images, and detected tables from PDF files."""
+    """Extract text, equations, images, and detected tables from PDF files."""
 
     def __init__(self, assets_root: str | Path):
         self.assets_root = Path(assets_root).resolve()
@@ -59,6 +118,7 @@ class PyMuPDFParser:
         asset_dir.mkdir(parents=True, exist_ok=True)
 
         items: list[ContentItem] = []
+        pending_equations: list[tuple[int, _PageCandidate]] = []
         with fitz.open(source) as pdf:
             for page_idx, page in enumerate(pdf):
                 page_candidates = self._parse_page(
@@ -68,29 +128,23 @@ class PyMuPDFParser:
                     asset_dir=asset_dir,
                 )
                 for candidate in page_candidates:
-                    order_idx = len(items)
-                    item_id = stable_id(
-                        "item",
+                    if candidate.type == ContentType.EQUATION:
+                        pending_equations.append((page_idx, candidate))
+                        continue
+                    self._append_candidate(
+                        items,
                         document_id,
                         page_idx,
-                        order_idx,
-                        candidate.type.value,
-                        candidate.text,
-                        candidate.asset_path,
+                        candidate,
                     )
-                    items.append(
-                        ContentItem(
-                            item_id=item_id,
-                            document_id=document_id,
-                            type=candidate.type,
-                            page_idx=page_idx,
-                            order_idx=order_idx,
-                            text=candidate.text,
-                            bbox=BoundingBox.from_value(candidate.bbox),
-                            asset_path=candidate.asset_path,
-                            metadata=candidate.metadata or {},
-                        )
-                    )
+
+            for page_idx, candidate in pending_equations:
+                self._append_candidate(
+                    items,
+                    document_id,
+                    page_idx,
+                    candidate,
+                )
 
             self._attach_nearby_captions(items)
             metadata = {
@@ -109,6 +163,37 @@ class PyMuPDFParser:
             metadata=metadata,
         )
 
+    @staticmethod
+    def _append_candidate(
+        items: list[ContentItem],
+        document_id: str,
+        page_idx: int,
+        candidate: _PageCandidate,
+    ) -> None:
+        order_idx = len(items)
+        item_id = stable_id(
+            "item",
+            document_id,
+            page_idx,
+            order_idx,
+            candidate.type.value,
+            candidate.text,
+            candidate.asset_path,
+        )
+        items.append(
+            ContentItem(
+                item_id=item_id,
+                document_id=document_id,
+                type=candidate.type,
+                page_idx=page_idx,
+                order_idx=order_idx,
+                text=candidate.text,
+                bbox=BoundingBox.from_value(candidate.bbox),
+                asset_path=candidate.asset_path,
+                metadata=candidate.metadata or {},
+            )
+        )
+
     def _parse_page(
         self,
         page: fitz.Page,
@@ -122,6 +207,7 @@ class PyMuPDFParser:
         table_boxes = [candidate.bbox for candidate in table_candidates]
         candidates = list(table_candidates)
         embedded_images: list[_EmbeddedImage] = []
+        text_blocks: list[_TextBlock] = []
 
         page_dict = page.get_text("dict", sort=True)
         for block_idx, block in enumerate(page_dict.get("blocks", [])):
@@ -129,21 +215,14 @@ class PyMuPDFParser:
             block_type = int(block.get("type", -1))
 
             if block_type == 0:
-                text = self._text_from_block(block)
+                text_block = self._text_block(block, block_idx)
                 if (
-                    not text
+                    not text_block.text
                     or not self._is_horizontal_text_block(block)
                     or self._mostly_inside_any(bbox, table_boxes)
                 ):
                     continue
-                candidates.append(
-                    _PageCandidate(
-                        type=ContentType.TEXT,
-                        bbox=bbox,
-                        text=text,
-                        metadata={"source_block_idx": block_idx},
-                    )
-                )
+                text_blocks.append(text_block)
             elif block_type == 1:
                 image_bytes = block.get("image")
                 if not image_bytes:
@@ -163,6 +242,20 @@ class PyMuPDFParser:
                     )
                 )
 
+        equation_candidates, _ = self._extract_equations(
+            text_blocks,
+            page.rect,
+        )
+        candidates.extend(
+            _PageCandidate(
+                type=ContentType.TEXT,
+                bbox=block.bbox,
+                text=block.text,
+                metadata={"source_block_idx": block.source_block_idx},
+            )
+            for block in text_blocks
+        )
+
         figure_captions = [
             candidate
             for candidate in candidates
@@ -181,7 +274,10 @@ class PyMuPDFParser:
             )
         )
 
-        return self._sort_reading_order(candidates, page.rect)
+        return [
+            *self._sort_reading_order(candidates, page.rect),
+            *self._sort_reading_order(equation_candidates, page.rect),
+        ]
 
     def _extract_image_groups(
         self,
@@ -330,10 +426,30 @@ class PyMuPDFParser:
         except Exception:
             return []
 
+        detection_method = "lines"
+        if not tables and _TABLE_CAPTION_RE.search(page.get_text("text")):
+            try:
+                tables = page.find_tables(
+                    vertical_strategy="text",
+                    horizontal_strategy="lines",
+                ).tables
+                detection_method = "booktabs"
+            except Exception:
+                return []
+
         candidates: list[_PageCandidate] = []
         for table_idx, table in enumerate(tables):
             bbox = tuple(float(value) for value in table.bbox)
-            markdown = self._table_to_markdown(table)
+            if (
+                detection_method == "booktabs"
+                and bbox[3] - bbox[1] > page.rect.height * 0.55
+            ):
+                continue
+            if detection_method == "booktabs":
+                bbox = self._expand_booktabs_bbox(page, bbox)
+                markdown = self._booktabs_to_markdown(page, bbox)
+            else:
+                markdown = self._table_to_markdown(table)
             if not markdown.strip():
                 continue
             table_id = stable_id("table", document_id, page_idx, table_idx, markdown)
@@ -351,10 +467,106 @@ class PyMuPDFParser:
                     bbox=bbox,
                     text=markdown,
                     asset_path=str(image_path.resolve()),
-                    metadata={"table_index": table_idx},
+                    metadata={
+                        "table_index": table_idx,
+                        "detection_method": detection_method,
+                    },
                 )
             )
         return candidates
+
+    @staticmethod
+    def _expand_booktabs_bbox(
+        page: fitz.Page,
+        bbox: tuple[float, float, float, float],
+    ) -> tuple[float, float, float, float]:
+        x0, y0, x1, y1 = bbox
+        minimum_width = (x1 - x0) * 0.75
+        horizontal_lines: list[tuple[float, float, float]] = []
+        for drawing in page.get_drawings():
+            for item in drawing.get("items", []):
+                if item[0] != "l":
+                    continue
+                start, end = item[1], item[2]
+                if abs(float(start.y) - float(end.y)) > 1.0:
+                    continue
+                line_x0 = min(float(start.x), float(end.x))
+                line_x1 = max(float(start.x), float(end.x))
+                line_y = (float(start.y) + float(end.y)) / 2
+                overlap = min(x1, line_x1) - max(x0, line_x0)
+                if (
+                    line_x1 - line_x0 >= minimum_width
+                    and overlap > 0
+                    and y0 - 20.0 <= line_y <= y1 + 3.0
+                ):
+                    horizontal_lines.append((line_x0, line_y, line_x1))
+
+        if not horizontal_lines:
+            return bbox
+        return (
+            min(x0, *(line[0] for line in horizontal_lines)),
+            min(y0, *(line[1] for line in horizontal_lines)),
+            max(x1, *(line[2] for line in horizontal_lines)),
+            max(y1, *(line[1] for line in horizontal_lines)),
+        )
+
+    @staticmethod
+    def _booktabs_to_markdown(
+        page: fitz.Page,
+        bbox: tuple[float, float, float, float],
+    ) -> str:
+        fragments: list[tuple[float, float, str]] = []
+        for block in page.get_text("dict", sort=True).get("blocks", []):
+            if int(block.get("type", -1)) != 0:
+                continue
+            for line in block.get("lines", []):
+                line_bbox = tuple(
+                    float(value) for value in line.get("bbox", (0, 0, 0, 0))
+                )
+                center_x = (line_bbox[0] + line_bbox[2]) / 2
+                center_y = (line_bbox[1] + line_bbox[3]) / 2
+                if not (
+                    bbox[0] - 1 <= center_x <= bbox[2] + 1
+                    and bbox[1] - 1 <= center_y <= bbox[3] + 1
+                ):
+                    continue
+                text = "".join(
+                    str(span.get("text", ""))
+                    for span in line.get("spans", [])
+                ).strip()
+                if text:
+                    fragments.append((center_y, line_bbox[0], text))
+
+        rows: list[list[tuple[float, float, str]]] = []
+        for fragment in sorted(fragments, key=lambda value: (value[0], value[1])):
+            if not rows:
+                rows.append([fragment])
+                continue
+            row_center = sum(item[0] for item in rows[-1]) / len(rows[-1])
+            if abs(fragment[0] - row_center) <= 2.0:
+                rows[-1].append(fragment)
+            else:
+                rows.append([fragment])
+
+        cells = [
+            [
+                item[2].replace("|", r"\|")
+                for item in sorted(row, key=lambda value: value[1])
+            ]
+            for row in rows
+        ]
+        if not cells:
+            return ""
+        column_count = max(len(row) for row in cells)
+        normalized = [
+            [*row, *([""] * (column_count - len(row)))]
+            for row in cells
+        ]
+        separator = ["---"] * column_count
+        return "\n".join(
+            "| " + " | ".join(row) + " |"
+            for row in [normalized[0], separator, *normalized[1:]]
+        )
 
     @staticmethod
     def _table_to_markdown(table: Any) -> str:
@@ -376,16 +588,382 @@ class PyMuPDFParser:
                 for row in [header, separator, *body]
             )
 
-    @staticmethod
-    def _text_from_block(block: dict[str, Any]) -> str:
+    @classmethod
+    def _text_from_block(cls, block: dict[str, Any]) -> str:
         lines: list[str] = []
         for line in block.get("lines", []):
             text = "".join(
-                str(span.get("text", "")) for span in line.get("spans", [])
+                cls._text_from_span(span) for span in line.get("spans", [])
             ).strip()
             if text:
                 lines.append(text)
         return "\n".join(lines).strip()
+
+    @staticmethod
+    def _text_from_span(span: dict[str, Any]) -> str:
+        text = str(span.get("text", ""))
+        font = str(span.get("font", "")).casefold()
+        if "cmex" in font and text == "X":
+            return "∑"
+        return text
+
+    @classmethod
+    def _text_block(
+        cls,
+        block: dict[str, Any],
+        block_idx: int,
+    ) -> _TextBlock:
+        math_characters = 0
+        characters = 0
+        fragments: list[_TextFragment] = []
+        for line_idx, line in enumerate(block.get("lines", [])):
+            line_math_characters = 0
+            line_characters = 0
+            line_parts: list[str] = []
+            for span in line.get("spans", []):
+                span_text = cls._text_from_span(span)
+                line_parts.append(span_text)
+                visible_count = sum(
+                    1 for character in span_text if not character.isspace()
+                )
+                characters += visible_count
+                line_characters += visible_count
+                font = str(span.get("font", "")).casefold()
+                if any(marker in font for marker in _MATH_FONT_MARKERS):
+                    math_characters += visible_count
+                    line_math_characters += visible_count
+
+            line_text = "".join(line_parts).strip()
+            if line_text:
+                fragments.append(
+                    _TextFragment(
+                        bbox=tuple(
+                            float(value)
+                            for value in line.get("bbox", block.get("bbox"))
+                        ),
+                        text=line_text,
+                        source_block_idx=block_idx,
+                        source_line_idx=line_idx,
+                        math_character_count=line_math_characters,
+                        character_count=line_characters,
+                    )
+                )
+
+        return _TextBlock(
+            bbox=tuple(
+                float(value) for value in block.get("bbox", (0, 0, 0, 0))
+            ),
+            text=cls._text_from_block(block),
+            source_block_idx=block_idx,
+            math_character_count=math_characters,
+            character_count=characters,
+            fragments=tuple(fragments),
+        )
+
+    @classmethod
+    def _extract_equations(
+        cls,
+        blocks: list[_TextBlock],
+        page_rect: fitz.Rect,
+    ) -> tuple[list[_PageCandidate], set[int]]:
+        """Detect numbered displays and conservative unnumbered math blocks."""
+        anchors = [
+            (block, match.group(1))
+            for block in blocks
+            if (match := _EQUATION_NUMBER_RE.search(block.text)) is not None
+        ]
+        assignments: dict[int, list[_TextBlock]] = {
+            anchor.source_block_idx: [anchor]
+            for anchor, _ in anchors
+        }
+
+        for block in blocks:
+            if block.source_block_idx in assignments:
+                continue
+            if not cls._is_equation_fragment(block):
+                continue
+            compatible = [
+                anchor
+                for anchor, _ in anchors
+                if cls._vertical_center_distance(block, anchor) <= 22.0
+            ]
+            if not compatible:
+                continue
+            anchor = min(
+                compatible,
+                key=lambda value: cls._vertical_center_distance(block, value),
+            )
+            assignments[anchor.source_block_idx].append(block)
+
+        equations: list[_PageCandidate] = []
+        consumed: set[int] = set()
+        for anchor, number in anchors:
+            group = assignments[anchor.source_block_idx]
+            anchor_text = cls._normalize_equation_fragment(
+                _EQUATION_NUMBER_RE.sub("", anchor.text)
+            )
+            if anchor_text:
+                if not cls._looks_like_equation_text(
+                    anchor_text,
+                    anchor.math_ratio,
+                ):
+                    continue
+            elif len(group) == 1:
+                continue
+            equation_text = cls._equation_text(group, number)
+            if not equation_text or not cls._group_has_math(group, equation_text):
+                continue
+            source_indexes = sorted(block.source_block_idx for block in group)
+            equations.append(
+                _PageCandidate(
+                    type=ContentType.EQUATION,
+                    bbox=cls._union_text_boxes(group),
+                    text=equation_text,
+                    metadata={
+                        "equation_number": number,
+                        "equation_format": "pdf_text",
+                        "detection_method": "numbered_display",
+                        "source_block_indexes": source_indexes,
+                    },
+                )
+            )
+            consumed.update(source_indexes)
+
+        fragments = [
+            fragment
+            for block in blocks
+            if block.source_block_idx not in consumed
+            for fragment in block.fragments
+            if cls._is_unnumbered_display_equation(fragment, page_rect)
+        ]
+        for group in cls._group_unnumbered_fragments(fragments, page_rect):
+            equation_text = cls._equation_text(group, None)
+            if not cls._looks_like_complete_equation(group, equation_text):
+                continue
+            source_indexes = sorted(
+                {fragment.source_block_idx for fragment in group}
+            )
+            equations.append(
+                _PageCandidate(
+                    type=ContentType.EQUATION,
+                    bbox=cls._union_text_boxes(group),
+                    text=equation_text,
+                    metadata={
+                        "equation_number": None,
+                        "equation_format": "pdf_text",
+                        "detection_method": "math_layout",
+                        "source_block_indexes": source_indexes,
+                        "source_line_indexes": [
+                            {
+                                "block": fragment.source_block_idx,
+                                "line": fragment.source_line_idx,
+                            }
+                            for fragment in group
+                        ],
+                    },
+                )
+            )
+            consumed.update(source_indexes)
+
+        return equations, consumed
+
+    @classmethod
+    def _is_equation_fragment(
+        cls,
+        block: _TextBlock | _TextFragment,
+    ) -> bool:
+        text = cls._normalize_equation_fragment(block.text)
+        return cls._looks_like_equation_text(text, block.math_ratio)
+
+    @staticmethod
+    def _looks_like_equation_text(text: str, math_ratio: float) -> bool:
+        if not text or len(text) > 240:
+            return False
+        if len(text) <= 4 and re.fullmatch(r"\d+(?:\.\d+)?", text):
+            return True
+        symbol_count = sum(character in _MATH_OPERATORS for character in text)
+        word_count = len(re.findall(r"[A-Za-z]{2,}", text))
+        if math_ratio >= 0.2:
+            return True
+        if symbol_count >= 1 and word_count <= 4:
+            return True
+        return len(text) <= 12 and bool(re.search(r"[\[\]{}()]", text))
+
+    @classmethod
+    def _is_unnumbered_display_equation(
+        cls,
+        block: _TextFragment,
+        page_rect: fitz.Rect,
+    ) -> bool:
+        if _EQUATION_NUMBER_RE.search(block.text):
+            return False
+        if not cls._is_equation_fragment(block):
+            return False
+        text = cls._normalize_equation_fragment(block.text)
+        block_center = (block.bbox[0] + block.bbox[2]) / 2
+        column = cls._column_index(block.bbox, page_rect)
+        if column == 0:
+            target_center = (page_rect.x0 + page_rect.x1) / 2
+            tolerance = page_rect.width * 0.2
+        elif column < 0:
+            target_center = page_rect.x0 + page_rect.width * 0.25
+            tolerance = page_rect.width * 0.15
+        else:
+            target_center = page_rect.x0 + page_rect.width * 0.75
+            tolerance = page_rect.width * 0.15
+        centered = abs(block_center - target_center) <= tolerance
+        narrow = block.bbox[2] - block.bbox[0] <= page_rect.width * 0.8
+        word_count = len(re.findall(r"[A-Za-z]{2,}", text))
+        return centered and narrow and word_count <= 4
+
+    @classmethod
+    def _group_unnumbered_fragments(
+        cls,
+        fragments: list[_TextFragment],
+        page_rect: fitz.Rect,
+    ) -> list[list[_TextFragment]]:
+        groups: list[list[_TextFragment]] = []
+        ordered = sorted(
+            fragments,
+            key=lambda value: (value.bbox[1], value.bbox[0]),
+        )
+        for fragment in ordered:
+            compatible: list[list[_TextFragment]] = []
+            fragment_column = cls._column_index(fragment.bbox, page_rect)
+            for group in groups:
+                group_column = cls._column_index(
+                    cls._union_text_boxes(group),
+                    page_rect,
+                )
+                bottom = max(item.bbox[3] for item in group)
+                center_distance = min(
+                    cls._vertical_center_distance(fragment, item)
+                    for item in group
+                )
+                vertical_gap = fragment.bbox[1] - bottom
+                if (
+                    fragment_column == group_column
+                    and vertical_gap <= 7.0
+                    and center_distance <= 20.0
+                ):
+                    compatible.append(group)
+            if not compatible:
+                groups.append([fragment])
+                continue
+            nearest = min(
+                compatible,
+                key=lambda group: min(
+                    cls._vertical_center_distance(fragment, item)
+                    for item in group
+                ),
+            )
+            nearest.append(fragment)
+        return groups
+
+    @staticmethod
+    def _looks_like_complete_equation(
+        fragments: list[_TextFragment],
+        equation_text: str,
+    ) -> bool:
+        if not any(
+            character in _MATH_OPERATORS for character in equation_text
+        ):
+            return False
+        math_characters = sum(
+            fragment.math_character_count for fragment in fragments
+        )
+        characters = sum(fragment.character_count for fragment in fragments)
+        if math_characters / max(characters, 1) >= 0.2:
+            return True
+        return bool(
+            re.match(
+                r"^[A-Za-z][A-Za-z0-9_ ]{0,40}\s*=",
+                equation_text,
+            )
+        )
+
+    @staticmethod
+    def _column_index(
+        bbox: tuple[float, float, float, float],
+        page_rect: fitz.Rect,
+    ) -> int:
+        page_center = (page_rect.x0 + page_rect.x1) / 2
+        if bbox[0] < page_center < bbox[2]:
+            return 0
+        return -1 if (bbox[0] + bbox[2]) / 2 < page_center else 1
+
+    @classmethod
+    def _group_has_math(
+        cls,
+        blocks: list[_TextBlock | _TextFragment],
+        equation_text: str,
+    ) -> bool:
+        symbol_count = sum(
+            character in _MATH_SYMBOLS for character in equation_text
+        )
+        math_characters = sum(block.math_character_count for block in blocks)
+        return symbol_count > 0 or math_characters > 0
+
+    @classmethod
+    def _equation_text(
+        cls,
+        blocks: list[_TextBlock | _TextFragment],
+        number: str | None,
+    ) -> str:
+        ordered_rows: list[list[_TextBlock | _TextFragment]] = []
+        for block in sorted(
+            blocks,
+            key=lambda value: (
+                (value.bbox[1] + value.bbox[3]) / 2,
+                value.bbox[0],
+            ),
+        ):
+            center_y = (block.bbox[1] + block.bbox[3]) / 2
+            if not ordered_rows:
+                ordered_rows.append([block])
+                continue
+            previous_centers = [
+                (item.bbox[1] + item.bbox[3]) / 2
+                for item in ordered_rows[-1]
+            ]
+            row_center = sum(previous_centers) / len(previous_centers)
+            if abs(center_y - row_center) <= 6.0:
+                ordered_rows[-1].append(block)
+            else:
+                ordered_rows.append([block])
+
+        parts: list[str] = []
+        for row in ordered_rows:
+            for block in sorted(row, key=lambda value: value.bbox[0]):
+                text = _EQUATION_NUMBER_RE.sub("", block.text).strip()
+                normalized = cls._normalize_equation_fragment(text)
+                if normalized:
+                    parts.append(normalized)
+        return " ".join(parts).strip()
+
+    @staticmethod
+    def _normalize_equation_fragment(text: str) -> str:
+        return " ".join(text.split())
+
+    @staticmethod
+    def _vertical_center_distance(
+        first: _TextBlock | _TextFragment,
+        second: _TextBlock | _TextFragment,
+    ) -> float:
+        first_center = (first.bbox[1] + first.bbox[3]) / 2
+        second_center = (second.bbox[1] + second.bbox[3]) / 2
+        return abs(first_center - second_center)
+
+    @staticmethod
+    def _union_text_boxes(
+        blocks: list[_TextBlock | _TextFragment],
+    ) -> tuple[float, float, float, float]:
+        return (
+            min(block.bbox[0] for block in blocks),
+            min(block.bbox[1] for block in blocks),
+            max(block.bbox[2] for block in blocks),
+            max(block.bbox[3] for block in blocks),
+        )
 
     @staticmethod
     def _is_horizontal_text_block(block: dict[str, Any]) -> bool:
