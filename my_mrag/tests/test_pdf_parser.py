@@ -70,6 +70,16 @@ def test_parser_handles_two_column_equations_and_booktabs(
     ]
 
     assert len(images) == 1
+    setup = next(
+        item
+        for item in document.items
+        if item.type == ContentType.TEXT
+        and item.text.startswith("Experimental Setup")
+    )
+    assert setup.metadata["headings"] == [
+        {"text": "Experimental Setup", "level": 1},
+        {"text": "Dataset", "level": 2},
+    ]
     assert len(tables) == 3
     assert all(
         table.metadata["detection_method"] == "booktabs"

@@ -86,6 +86,12 @@ class _TextFragment:
 
 
 @dataclass(frozen=True)
+class _TextHeading:
+    text: str
+    level: int
+
+
+@dataclass(frozen=True)
 class _TextBlock:
     bbox: tuple[float, float, float, float]
     text: str
@@ -93,6 +99,7 @@ class _TextBlock:
     math_character_count: int
     character_count: int
     fragments: tuple[_TextFragment, ...] = ()
+    headings: tuple[_TextHeading, ...] = ()
 
     @property
     def math_ratio(self) -> float:
@@ -251,7 +258,22 @@ class PyMuPDFParser:
                 type=ContentType.TEXT,
                 bbox=block.bbox,
                 text=block.text,
-                metadata={"source_block_idx": block.source_block_idx},
+                metadata={
+                    "source_block_idx": block.source_block_idx,
+                    **(
+                        {
+                            "headings": [
+                                {
+                                    "text": heading.text,
+                                    "level": heading.level,
+                                }
+                                for heading in block.headings
+                            ]
+                        }
+                        if block.headings
+                        else {}
+                    ),
+                },
             )
             for block in text_blocks
         )
@@ -658,7 +680,70 @@ class PyMuPDFParser:
             math_character_count=math_characters,
             character_count=characters,
             fragments=tuple(fragments),
+            headings=cls._heading_prefixes(block),
         )
+
+    @classmethod
+    def _heading_prefixes(
+        cls,
+        block: dict[str, Any],
+    ) -> tuple[_TextHeading, ...]:
+        prefix_lines: list[tuple[str, float]] = []
+        for line in block.get("lines", []):
+            all_spans = list(line.get("spans", []))
+            spans = [
+                span
+                for span in all_spans
+                if str(span.get("text", "")).strip()
+            ]
+            if not spans or not all(cls._is_bold_span(span) for span in spans):
+                break
+            text = "".join(
+                cls._text_from_span(span) for span in all_spans
+            ).strip()
+            size = max(float(span.get("size") or 0) for span in spans)
+            if text:
+                prefix_lines.append((text, size))
+
+        headings: list[_TextHeading] = []
+        for text, size in prefix_lines:
+            if size > 13.0:
+                return ()
+            level = cls._typographic_heading_level(text, size)
+            if headings and headings[-1].level == level:
+                previous = headings[-1]
+                headings[-1] = _TextHeading(
+                    text=f"{previous.text} {text}".strip(),
+                    level=level,
+                )
+            else:
+                headings.append(_TextHeading(text=text, level=level))
+        return tuple(headings)
+
+    @staticmethod
+    def _is_bold_span(span: dict[str, Any]) -> bool:
+        font = str(span.get("font", "")).casefold()
+        flags = int(span.get("flags") or 0)
+        return bool(flags & 16) or any(
+            marker in font for marker in ("bold", "demi", "medi")
+        )
+
+    @staticmethod
+    def _typographic_heading_level(text: str, size: float) -> int:
+        if text.strip().upper() in {
+            "ABSTRACT",
+            "ACKNOWLEDGMENTS",
+            "APPENDIX",
+            "CONCLUSION",
+            "CONCLUSIONS",
+            "REFERENCES",
+        }:
+            return 1
+        if size >= 11.5:
+            return 1
+        if size >= 10.5:
+            return 2
+        return 3
 
     @classmethod
     def _extract_equations(

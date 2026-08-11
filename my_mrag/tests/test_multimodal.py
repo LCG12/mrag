@@ -103,6 +103,7 @@ def test_context_extractor_supports_page_and_chunk_modes() -> None:
     document = _document([intro, before, image, after, conclusion])
 
     page_context = ContextExtractor().extract_context(document, image)
+    assert page_context.startswith("Planner context\nExecutor context")
     assert "[Page 1] Introduction" in page_context
     assert "Planner context" in page_context
     assert "Executor context" in page_context
@@ -230,3 +231,21 @@ def test_pipeline_processes_and_persists_all_modalities(tmp_path: Path) -> None:
     assert len(vision_model.requests) == 1
     assert len(text_model.requests) == 2
     assert pipeline.store.load_analyses("doc-1") == analyses
+
+    retry_pipeline = MultimodalPipeline(
+        settings=_settings(tmp_path),
+        text_model=FakeModel("retry-text", "ignored again"),
+    )
+    retried, _ = asyncio.run(
+        retry_pipeline.analyze_and_save(document, item_ids=["table"])
+    )
+    stored = retry_pipeline.store.load_analyses("doc-1")
+
+    assert len(retried) == 1
+    assert len(stored) == 3
+    assert [analysis.content_type for analysis in stored] == [
+        ContentType.IMAGE,
+        ContentType.TABLE,
+        ContentType.EQUATION,
+    ]
+    assert stored[1].model_name == "retry-text"

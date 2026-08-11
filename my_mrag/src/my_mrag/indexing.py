@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
+import re
 from typing import Any, Protocol
 
 from my_mrag.schemas import (
@@ -348,7 +349,7 @@ class LightRAGIndexer:
 
     @staticmethod
     def _entity_key(value: str) -> str:
-        return " ".join(value.split()).casefold()
+        return re.sub(r"[^a-z0-9]+", "", value.casefold())
 
     @staticmethod
     def _merge_descriptions(descriptions: list[str], limit: int = 2000) -> str:

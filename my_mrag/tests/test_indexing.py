@@ -184,6 +184,11 @@ def test_indexer_merges_text_entities_and_relationships() -> None:
                 description="A multimodal retrieval framework.",
             ),
             KnowledgeEntity(
+                entity_name="RAG Anything",
+                entity_type="method",
+                description="The same framework without punctuation.",
+            ),
+            KnowledgeEntity(
                 entity_name="Dual-Graph Construction",
                 entity_type="component",
                 description="Builds cross-modal and modality-aware graphs.",
@@ -191,7 +196,7 @@ def test_indexer_merges_text_entities_and_relationships() -> None:
         ),
         relationships=(
             KnowledgeRelationship(
-                source_entity="RAG-Anything",
+                source_entity="RAG Anything",
                 target_entity="Dual-Graph Construction",
                 description="The framework uses dual-graph construction.",
                 keywords=("uses", "constructs"),
@@ -212,13 +217,14 @@ def test_indexer_merges_text_entities_and_relationships() -> None:
     )
 
     assert report.knowledge_chunk_count == 1
-    assert report.text_entity_count == 2
+    assert report.text_entity_count == 3
     assert report.text_relationship_count == 1
     payload, _ = store.calls[0]
     entities = {
         entity["entity_name"]: entity for entity in payload["entities"]
     }
     assert entities["RAG-Anything"]["source_id"] == "chunk-text-1"
+    assert "without punctuation" in entities["RAG-Anything"]["description"]
     assert entities["Dual-Graph Construction"]["entity_type"] == "component"
     relationship = payload["relationships"][0]
     assert relationship["src_id"] == "RAG-Anything"

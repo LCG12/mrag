@@ -92,11 +92,23 @@ class ContextExtractor:
         end_page = current_item.page_idx + self.config.context_window
         parts: list[str] = []
 
-        for item in sorted(items, key=lambda value: value.order_idx):
-            if (
-                start_page <= item.page_idx <= end_page
-                and item.type in self.config.filter_content_types
-            ):
+        page_order = [current_item.page_idx]
+        for distance in range(1, self.config.context_window + 1):
+            previous_page = current_item.page_idx - distance
+            next_page = current_item.page_idx + distance
+            if previous_page >= start_page:
+                page_order.append(previous_page)
+            if next_page <= end_page:
+                page_order.append(next_page)
+
+        ordered_items = sorted(items, key=lambda value: value.order_idx)
+        for page_idx in page_order:
+            for item in ordered_items:
+                if (
+                    item.page_idx != page_idx
+                    or item.type not in self.config.filter_content_types
+                ):
+                    continue
                 text = self._extract_text(item)
                 if not text:
                     continue

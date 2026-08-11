@@ -204,6 +204,7 @@ class TextChunker:
         boilerplate = self._find_repeated_boilerplate(document)
         sections: list[tuple[tuple[str, ...], list[_TextUnit]]] = []
         section_path: tuple[str, ...] = ()
+        section_levels: tuple[int, ...] = ()
         units: list[_TextUnit] = []
 
         for item in sorted(document.items, key=lambda value: value.order_idx):
@@ -213,13 +214,35 @@ class TextChunker:
             if not text or text in boilerplate or _PAGE_NUMBER_RE.fullmatch(text):
                 continue
 
+            metadata_headings = self._metadata_headings(item)
+            if metadata_headings:
+                for heading_level, heading_text in metadata_headings:
+                    normalized_heading = self._normalize_text(heading_text)
+                    if not text.casefold().startswith(
+                        normalized_heading.casefold()
+                    ):
+                        break
+                    if units:
+                        sections.append((section_path, units))
+                        units = []
+                    section_path, section_levels = self._update_section_path(
+                        section_path,
+                        section_levels,
+                        heading_level,
+                        normalized_heading,
+                    )
+                    text = text[len(normalized_heading) :].strip()
+                if not text:
+                    continue
+
             heading_level = self._heading_level(item, text)
             if heading_level is not None:
                 if units:
                     sections.append((section_path, units))
                     units = []
-                section_path = self._update_section_path(
+                section_path, section_levels = self._update_section_path(
                     section_path,
+                    section_levels,
                     heading_level,
                     text,
                 )
@@ -238,6 +261,24 @@ class TextChunker:
         if units:
             sections.append((section_path, units))
         return sections
+
+    @staticmethod
+    def _metadata_headings(item: ContentItem) -> tuple[tuple[int, str], ...]:
+        headings: list[tuple[int, str]] = []
+        values = item.metadata.get("headings") or []
+        if not isinstance(values, list):
+            return ()
+        for value in values:
+            if not isinstance(value, dict):
+                continue
+            text = str(value.get("text") or "").strip()
+            try:
+                level = int(value.get("level") or 0)
+            except (TypeError, ValueError):
+                continue
+            if text and level > 0:
+                headings.append((level, text))
+        return tuple(headings)
 
     def _chunk_section(
         self,
@@ -430,11 +471,17 @@ class TextChunker:
     @staticmethod
     def _update_section_path(
         current: tuple[str, ...],
+        current_levels: tuple[int, ...],
         level: int,
         heading: str,
-    ) -> tuple[str, ...]:
-        prefix = current[: max(level - 1, 0)]
-        return (*prefix, heading)
+    ) -> tuple[tuple[str, ...], tuple[int, ...]]:
+        keep = len(current_levels)
+        while keep > 0 and current_levels[keep - 1] >= level:
+            keep -= 1
+        return (
+            (*current[:keep], heading),
+            (*current_levels[:keep], level),
+        )
 
     @staticmethod
     def _find_repeated_boilerplate(document: ParsedDocument) -> set[str]:

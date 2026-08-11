@@ -109,9 +109,24 @@ class MultimodalPipeline:
             item_ids=item_ids,
             content_types=content_types,
         )
+        items_by_id = {item.item_id: item for item in document.items}
+        merged = {
+            analysis.item_id: analysis
+            for analysis in (
+                self.store.load_analyses(document.document_id)
+                if self.store.exists(document.document_id)
+                else []
+            )
+            if analysis.item_id in items_by_id
+        }
+        merged.update({analysis.item_id: analysis for analysis in analyses})
+        stored_analyses = sorted(
+            merged.values(),
+            key=lambda analysis: items_by_id[analysis.item_id].order_idx,
+        )
         return analyses, self.store.save_analyses(
             document.document_id,
-            analyses,
+            stored_analyses,
         )
 
     def _select_items(

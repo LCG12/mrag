@@ -26,6 +26,7 @@ def _text_item(
     text: str,
     order_idx: int,
     page_idx: int = 0,
+    metadata: dict[str, Any] | None = None,
 ) -> ContentItem:
     return ContentItem(
         item_id=item_id,
@@ -34,6 +35,7 @@ def _text_item(
         page_idx=page_idx,
         order_idx=order_idx,
         text=text,
+        metadata=metadata or {},
     )
 
 
@@ -129,6 +131,63 @@ def test_chunker_does_not_treat_acronyms_or_equations_as_headings() -> None:
     assert chunks[0].section_path == ("2 METHODS",)
     assert "VLM/LLM" in chunks[0].text
     assert "T = emb(s)" in chunks[0].text
+
+
+def test_chunker_uses_typographic_headings_embedded_in_text() -> None:
+    document = _document(
+        [
+            _text_item(
+                "method",
+                "Methodology The architecture separates planning from execution.",
+                0,
+                metadata={
+                    "headings": [{"text": "Methodology", "level": 1}]
+                },
+            ),
+            _text_item(
+                "planner",
+                "Planner The planner decomposes the task.",
+                1,
+                metadata={
+                    "headings": [{"text": "Planner", "level": 3}]
+                },
+            ),
+            _text_item(
+                "executor",
+                "Executor The executor invokes tools.",
+                2,
+                metadata={
+                    "headings": [{"text": "Executor", "level": 3}]
+                },
+            ),
+            _text_item(
+                "setup",
+                "Experimental Setup Dataset We evaluate five domains.",
+                3,
+                metadata={
+                    "headings": [
+                        {"text": "Experimental Setup", "level": 1},
+                        {"text": "Dataset", "level": 2},
+                    ]
+                },
+            ),
+        ]
+    )
+
+    chunks = TextChunker(tokenizer=WordTokenizer()).chunk(document)
+
+    assert [chunk.section_path for chunk in chunks] == [
+        ("Methodology",),
+        ("Methodology", "Planner"),
+        ("Methodology", "Executor"),
+        ("Experimental Setup", "Dataset"),
+    ]
+    assert chunks[0].text == (
+        "The architecture separates planning from execution."
+    )
+    assert chunks[1].text == "The planner decomposes the task."
+    assert chunks[2].text == "The executor invokes tools."
+    assert chunks[3].text == "We evaluate five domains."
 
 
 def test_chunk_store_round_trips(tmp_path: Path) -> None:
