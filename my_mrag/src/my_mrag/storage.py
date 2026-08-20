@@ -2,14 +2,20 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 
 from my_mrag.schemas import (
     AnalysisRequest,
     ChunkKnowledge,
+    ConversationSession,
+    ConversationTurn,
     ModalAnalysis,
     ParsedDocument,
     TextChunk,
 )
+
+
+_SESSION_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}")
 
 
 class JsonDocumentStore:
@@ -190,3 +196,74 @@ class JsonKnowledgeStore:
 
     def exists(self, document_id: str) -> bool:
         return (self.directory / f"{document_id}.json").is_file()
+
+
+class JsonConversationStore:
+    """Persist readable, append-only conversation sessions as JSON."""
+
+    def __init__(self, directory: str | Path):
+        self.directory = Path(directory).resolve()
+        self.directory.mkdir(parents=True, exist_ok=True)
+
+    def path_for(self, session_id: str) -> Path:
+        normalized = self.validate_session_id(session_id)
+        return self.directory / f"{normalized}.json"
+
+    def save(self, session: ConversationSession) -> Path:
+        target = self.path_for(session.session_id)
+        temp_target = target.with_suffix(".json.tmp")
+        with temp_target.open("w", encoding="utf-8") as stream:
+            json.dump(
+                session.to_dict(),
+                stream,
+                ensure_ascii=False,
+                indent=2,
+            )
+        temp_target.replace(target)
+        return target
+
+    def load(self, session_id: str) -> ConversationSession:
+        normalized = self.validate_session_id(session_id)
+        path = self.path_for(normalized)
+        if not path.is_file():
+            raise FileNotFoundError(f"Conversation session not found: {path}")
+        with path.open("r", encoding="utf-8") as stream:
+            session = ConversationSession.from_dict(json.load(stream))
+        if session.session_id != normalized:
+            raise ValueError(f"Conversation session ID mismatch: {path}")
+        return session
+
+    def load_or_create(self, session_id: str) -> ConversationSession:
+        normalized = self.validate_session_id(session_id)
+        return (
+            self.load(normalized)
+            if self.exists(normalized)
+            else ConversationSession(session_id=normalized)
+        )
+
+    def append(
+        self,
+        session_id: str,
+        turn: ConversationTurn,
+    ) -> tuple[ConversationSession, Path]:
+        session = self.load_or_create(session_id)
+        if any(existing.turn_id == turn.turn_id for existing in session.turns):
+            raise ValueError(f"Duplicate conversation turn: {turn.turn_id}")
+        updated = ConversationSession(
+            session_id=session.session_id,
+            turns=(*session.turns, turn),
+        )
+        return updated, self.save(updated)
+
+    def exists(self, session_id: str) -> bool:
+        return self.path_for(session_id).is_file()
+
+    @staticmethod
+    def validate_session_id(session_id: str) -> str:
+        normalized = session_id.strip()
+        if not _SESSION_ID_RE.fullmatch(normalized):
+            raise ValueError(
+                "session_id must contain 1-64 letters, digits, underscores, "
+                "or hyphens and must start with a letter or digit"
+            )
+        return normalized

@@ -6,6 +6,15 @@ import json
 from pathlib import Path
 import sys
 
+from my_mrag.agent import (
+    AgentConfig,
+    ExecutorConfig,
+    PlannerConfig,
+    ProxyExecutor,
+    ResearchPlanner,
+    RPReActAgent,
+)
+from my_mrag.answering import AnswerConfig, AnswerPipeline
 from my_mrag.chunking import (
     ApproximateTokenizer,
     TextChunkConfig,
@@ -19,12 +28,14 @@ from my_mrag.knowledge import (
     KnowledgeExtractionPipeline,
 )
 from my_mrag.models import OpenAICompatibleModel
+from my_mrag.memory import ConversationMemory, MemoryConfig
 from my_mrag.multimodal import MultimodalPipeline
 from my_mrag.pipeline import IngestionPipeline
 from my_mrag.retrieval import RetrievalConfig, RetrievalPipeline
 from my_mrag.schemas import ContentType
 from my_mrag.storage import (
     JsonAnalysisStore,
+    JsonConversationStore,
     JsonKnowledgeStore,
     JsonTextChunkStore,
 )
@@ -137,6 +148,81 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Print complete retrieved chunk content.",
     )
 
+    answer_command = subparsers.add_parser(
+        "answer",
+        help="Retrieve evidence and generate a source-cited answer.",
+    )
+    answer_command.add_argument("query")
+    answer_command.add_argument("--document-id")
+    answer_command.add_argument("--top-k", type=int, default=6)
+    answer_command.add_argument("--entity-top-k", type=int, default=5)
+    answer_command.add_argument("--relationship-top-k", type=int, default=5)
+    answer_command.add_argument("--graph-depth", type=int, default=1)
+    answer_command.add_argument(
+        "--max-context-characters",
+        type=int,
+        default=24000,
+        help="Maximum evidence characters sent to the answer model.",
+    )
+
+    agent_command = subparsers.add_parser(
+        "agent",
+        help="Plan retrieval steps, execute them, and answer with citations.",
+    )
+    agent_command.add_argument("query")
+    agent_command.add_argument("--document-id")
+    agent_command.add_argument(
+        "--session-id",
+        help="Persist and reuse conversation history under this session ID.",
+    )
+    agent_command.add_argument(
+        "--memory-turns",
+        type=int,
+        default=4,
+        help="Recent completed turns included as conversation context.",
+    )
+    agent_command.add_argument("--max-steps", type=int, default=3)
+    agent_command.add_argument(
+        "--max-replans",
+        type=int,
+        default=1,
+        help="Maximum evidence-review and follow-up rounds; 0 disables review.",
+    )
+    agent_command.add_argument(
+        "--max-followup-steps",
+        type=int,
+        default=1,
+        help="Maximum new retrieval steps proposed by each review.",
+    )
+    agent_command.add_argument(
+        "--top-k",
+        type=int,
+        default=4,
+        help="Chunk results retained by each planned retrieval step.",
+    )
+    agent_command.add_argument("--entity-top-k", type=int, default=4)
+    agent_command.add_argument("--relationship-top-k", type=int, default=4)
+    agent_command.add_argument("--graph-depth", type=int, default=1)
+    agent_command.add_argument("--concurrency", type=int, default=2)
+    agent_command.add_argument(
+        "--max-evidence-chunks",
+        type=int,
+        default=10,
+        help="Maximum RRF-fused chunks sent to answer generation.",
+    )
+    agent_command.add_argument("--rrf-k", type=int, default=60)
+    agent_command.add_argument(
+        "--max-context-characters",
+        type=int,
+        default=24000,
+    )
+
+    memory_inspect_command = subparsers.add_parser(
+        "memory-inspect",
+        help="Inspect a persisted conversation session.",
+    )
+    memory_inspect_command.add_argument("session_id")
+
     embedding_command = subparsers.add_parser(
         "embedding-check",
         help="Load the configured embedding model and compare sample texts.",
@@ -190,7 +276,7 @@ def _content_types(values: list[str] | None) -> list[ContentType] | None:
 
 def main() -> None:
     if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(errors="backslashreplace")
     args = _build_parser().parse_args()
     settings = Settings.load(args.data_dir)
     pipeline = IngestionPipeline(settings)
@@ -533,6 +619,131 @@ def main() -> None:
             return payload
 
         summary = asyncio.run(run_retrieval())
+    elif args.command == "answer":
+        from my_mrag.lightrag_runtime import open_lightrag
+
+        if args.document_id:
+            pipeline.load(args.document_id)
+
+        model = OpenAICompatibleModel.from_env(
+            "DEEPSEEK",
+            thinking=False,
+        )
+        assert model is not None
+
+        async def run_answer() -> dict[str, object]:
+            async with open_lightrag(settings) as rag:
+                retriever = RetrievalPipeline(
+                    rag,
+                    settings,
+                    RetrievalConfig(
+                        chunk_top_k=args.top_k,
+                        entity_top_k=args.entity_top_k,
+                        relationship_top_k=args.relationship_top_k,
+                        final_top_k=args.top_k,
+                        graph_depth=args.graph_depth,
+                    ),
+                )
+                result = await AnswerPipeline(
+                    retriever,
+                    model,
+                    AnswerConfig(
+                        max_context_characters=(
+                            args.max_context_characters
+                        )
+                    ),
+                ).answer(
+                    args.query,
+                    document_id=args.document_id,
+                )
+            return result.to_dict()
+
+        summary = asyncio.run(run_answer())
+    elif args.command == "agent":
+        from my_mrag.lightrag_runtime import open_lightrag
+
+        if args.document_id:
+            pipeline.load(args.document_id)
+
+        planner_model = OpenAICompatibleModel.from_env(
+            "DEEPSEEK",
+            json_mode=True,
+            thinking=False,
+        )
+        answer_model = OpenAICompatibleModel.from_env(
+            "DEEPSEEK",
+            thinking=False,
+        )
+        assert planner_model is not None
+        assert answer_model is not None
+
+        async def run_agent() -> dict[str, object]:
+            async with open_lightrag(settings) as rag:
+                retriever = RetrievalPipeline(
+                    rag,
+                    settings,
+                    RetrievalConfig(
+                        chunk_top_k=args.top_k,
+                        entity_top_k=args.entity_top_k,
+                        relationship_top_k=args.relationship_top_k,
+                        final_top_k=args.top_k,
+                        graph_depth=args.graph_depth,
+                    ),
+                )
+                agent = RPReActAgent(
+                    ResearchPlanner(
+                        planner_model,
+                        PlannerConfig(
+                            max_steps=args.max_steps,
+                            max_followup_steps=args.max_followup_steps,
+                        ),
+                    ),
+                    ProxyExecutor(
+                        retriever,
+                        ExecutorConfig(
+                            concurrency=args.concurrency,
+                            max_chunks=args.max_evidence_chunks,
+                            rrf_k=args.rrf_k,
+                        ),
+                    ),
+                    AnswerPipeline(
+                        retriever,
+                        answer_model,
+                        AnswerConfig(
+                            max_context_characters=(
+                                args.max_context_characters
+                            )
+                        ),
+                    ),
+                    AgentConfig(max_replans=args.max_replans),
+                    memory=(
+                        ConversationMemory(
+                            JsonConversationStore(
+                                settings.data_dir / "memory"
+                            ),
+                            MemoryConfig(
+                                context_turns=args.memory_turns
+                            ),
+                        )
+                        if args.session_id
+                        else None
+                    ),
+                )
+                result = await agent.run(
+                    args.query,
+                    document_id=args.document_id,
+                    session_id=args.session_id,
+                )
+            return result.to_dict()
+
+        summary = asyncio.run(run_agent())
+    elif args.command == "memory-inspect":
+        memory_store = JsonConversationStore(settings.data_dir / "memory")
+        session = memory_store.load(args.session_id)
+        summary = session.to_dict()
+        summary["stored_path"] = str(
+            memory_store.path_for(args.session_id)
+        )
     else:
         from my_mrag.embeddings import (
             build_embedding_model,

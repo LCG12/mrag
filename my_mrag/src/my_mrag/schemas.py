@@ -328,6 +328,239 @@ class RetrievalResult:
 
 
 @dataclass(frozen=True)
+class AnswerSource:
+    """One citation target exposed with a generated answer."""
+
+    citation_id: str
+    chunk_id: str
+    source_id: str
+    document_id: str
+    file_path: str
+    page_start: int | None
+    page_end: int | None
+    section_path: tuple[str, ...] = ()
+    content_type: str = "text"
+    score: float = 0.0
+    asset_path: str | None = None
+    captions: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["section_path"] = list(self.section_path)
+        payload["captions"] = list(self.captions)
+        return payload
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "AnswerSource":
+        data = dict(payload)
+        data["section_path"] = tuple(data.get("section_path", ()))
+        data["captions"] = tuple(data.get("captions", ()))
+        return cls(**data)
+
+
+@dataclass(frozen=True)
+class AnswerResult:
+    """A grounded model answer and its source citation map."""
+
+    query: str
+    answer: str
+    sources: tuple[AnswerSource, ...]
+    cited_source_ids: tuple[str, ...]
+    model_name: str
+    retrieved_entity_count: int = 0
+    retrieved_relationship_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "query": self.query,
+            "answer": self.answer,
+            "model_name": self.model_name,
+            "cited_source_ids": list(self.cited_source_ids),
+            "sources": [source.to_dict() for source in self.sources],
+            "evidence_counts": {
+                "sources": len(self.sources),
+                "entities": self.retrieved_entity_count,
+                "relationships": self.retrieved_relationship_count,
+            },
+        }
+
+
+@dataclass(frozen=True)
+class ConversationTurn:
+    """One completed user/assistant exchange stored in session memory."""
+
+    turn_id: str
+    query: str
+    answer: str
+    document_id: str | None
+    created_at: str
+    cited_sources: tuple[AnswerSource, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "turn_id": self.turn_id,
+            "query": self.query,
+            "answer": self.answer,
+            "document_id": self.document_id,
+            "created_at": self.created_at,
+            "cited_sources": [
+                source.to_dict() for source in self.cited_sources
+            ],
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "ConversationTurn":
+        return cls(
+            turn_id=str(payload["turn_id"]),
+            query=str(payload["query"]),
+            answer=str(payload["answer"]),
+            document_id=(
+                str(payload["document_id"])
+                if payload.get("document_id") is not None
+                else None
+            ),
+            created_at=str(payload.get("created_at") or ""),
+            cited_sources=tuple(
+                AnswerSource.from_dict(source)
+                for source in payload.get("cited_sources", [])
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class ConversationSession:
+    """Ordered turns associated with one user-selected session ID."""
+
+    session_id: str
+    turns: tuple[ConversationTurn, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "session_id": self.session_id,
+            "turn_count": len(self.turns),
+            "turns": [turn.to_dict() for turn in self.turns],
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "ConversationSession":
+        return cls(
+            session_id=str(payload["session_id"]),
+            turns=tuple(
+                ConversationTurn.from_dict(turn)
+                for turn in payload.get("turns", [])
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class ResearchPlanStep:
+    """One evidence-gathering objective produced by the reasoner planner."""
+
+    step_id: str
+    objective: str
+    search_query: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class ResearchPlan:
+    """A bounded high-level plan for answering one research question."""
+
+    query: str
+    steps: tuple[ResearchPlanStep, ...]
+    model_name: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "query": self.query,
+            "model_name": self.model_name,
+            "steps": [step.to_dict() for step in self.steps],
+        }
+
+
+@dataclass(frozen=True)
+class PlanReview:
+    """One evidence-sufficiency decision made after tool observations."""
+
+    round_index: int
+    decision: str
+    reason: str
+    evidence_chunk_ids: tuple[str, ...] = ()
+    added_steps: tuple[ResearchPlanStep, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "round_index": self.round_index,
+            "decision": self.decision,
+            "reason": self.reason,
+            "evidence_chunk_ids": list(self.evidence_chunk_ids),
+            "added_steps": [step.to_dict() for step in self.added_steps],
+        }
+
+
+@dataclass(frozen=True)
+class ToolExecution:
+    """Observable result of one proxy-executor tool call."""
+
+    step_id: str
+    objective: str
+    tool_name: str
+    tool_input: str
+    retrieved_chunk_ids: tuple[str, ...] = ()
+    retrieved_entity_count: int = 0
+    retrieved_relationship_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["retrieved_chunk_ids"] = list(self.retrieved_chunk_ids)
+        return payload
+
+
+@dataclass(frozen=True)
+class AgentResult:
+    """RP-ReAct plan, execution trace, and final grounded answer."""
+
+    query: str
+    plan: ResearchPlan
+    executions: tuple[ToolExecution, ...]
+    answer: AnswerResult
+    reviews: tuple[PlanReview, ...] = ()
+    stop_reason: str = "completed"
+    session_id: str | None = None
+    memory_turn_count: int = 0
+    memory_path: str | None = None
+    merged_chunk_count: int = 0
+    merged_entity_count: int = 0
+    merged_relationship_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "query": self.query,
+            "plan": self.plan.to_dict(),
+            "executions": [execution.to_dict() for execution in self.executions],
+            "reviews": [review.to_dict() for review in self.reviews],
+            "stop_reason": self.stop_reason,
+            "memory": (
+                {
+                    "session_id": self.session_id,
+                    "turn_count": self.memory_turn_count,
+                    "stored_path": self.memory_path,
+                }
+                if self.session_id
+                else None
+            ),
+            "merged_evidence_counts": {
+                "chunks": self.merged_chunk_count,
+                "entities": self.merged_entity_count,
+                "relationships": self.merged_relationship_count,
+            },
+            "answer": self.answer.to_dict(),
+        }
+
+
+@dataclass(frozen=True)
 class EntityInfo:
     """Entity generated from one multimodal item."""
 

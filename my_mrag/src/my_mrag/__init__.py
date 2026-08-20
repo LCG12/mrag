@@ -1,36 +1,65 @@
 """Learning-oriented multimodal RAG implementation."""
 
+from .agent import (
+    AgentConfig,
+    ExecutorConfig,
+    PlannerConfig,
+    ProxyExecutor,
+    ResearchPlanner,
+    RPReActAgent,
+)
+from .answering import AnswerConfig, AnswerPipeline
 from .chunking import TextChunkConfig, TextChunker
 from .pipeline import IngestionPipeline
 from .multimodal import MultimodalPipeline
 from .indexing import IndexingReport, LightRAGIndexer
 from .knowledge import KnowledgeExtractionConfig, KnowledgeExtractionPipeline
+from .memory import ConversationMemory, MemoryConfig
 from .retrieval import RetrievalConfig, RetrievalPipeline
 from .schemas import (
     AnalysisRequest,
+    AgentResult,
+    AnswerResult,
+    AnswerSource,
     BoundingBox,
     ChunkKnowledge,
     ContentItem,
     ContentType,
+    ConversationSession,
+    ConversationTurn,
     EntityInfo,
     KnowledgeEntity,
     KnowledgeRelationship,
     ModalAnalysis,
     ParsedDocument,
+    PlanReview,
+    ResearchPlan,
+    ResearchPlanStep,
     RetrievalResult,
     RetrievedChunk,
     RetrievedEntity,
     RetrievedRelationship,
     TextChunk,
+    ToolExecution,
 )
 
 __all__ = [
+    "AgentConfig",
+    "AgentResult",
     "AnalysisRequest",
+    "AnswerConfig",
+    "AnswerPipeline",
+    "AnswerResult",
+    "AnswerSource",
     "BoundingBox",
     "ChunkKnowledge",
     "ContentItem",
     "ContentType",
+    "ConversationMemory",
+    "ConversationSession",
+    "ConversationTurn",
     "EntityInfo",
+    "ExecutorConfig",
     "IngestionPipeline",
     "IndexingReport",
     "KnowledgeEntity",
@@ -39,15 +68,24 @@ __all__ = [
     "KnowledgeRelationship",
     "LightRAGIndexer",
     "ModalAnalysis",
+    "MemoryConfig",
     "MultimodalPipeline",
     "ParsedDocument",
+    "PlanReview",
+    "PlannerConfig",
+    "ProxyExecutor",
+    "ResearchPlan",
+    "ResearchPlanner",
+    "ResearchPlanStep",
     "RetrievalConfig",
     "RetrievalPipeline",
     "RetrievalResult",
     "RetrievedChunk",
     "RetrievedEntity",
     "RetrievedRelationship",
+    "RPReActAgent",
     "TextChunk",
     "TextChunkConfig",
     "TextChunker",
+    "ToolExecution",
 ]

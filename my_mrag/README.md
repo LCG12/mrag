@@ -65,10 +65,46 @@ The sixth milestone implements our own text knowledge extraction:
 5. Insert the resulting nodes, edges, entity vectors, and relationship vectors
    through LightRAG's public custom-KG API.
 
-The lightweight PyMuPDF parser detects tables that expose sufficient ruling
-lines. Borderless academic tables and equation recognition will be handled by
-the next parser milestone, where we add a layout-model parser behind the same
-`DocumentParser` interface.
+The seventh milestone implements grounded answer generation:
+
+1. Convert ranked chunks into stable `[S1]`, `[S2]`, ... evidence blocks.
+2. Include the source file, one-based PDF pages, section path, modality,
+   caption, and content in every citation target.
+3. Use retrieved entities and relationships as navigation hints without
+   treating graph summaries as independently citable evidence.
+4. Generate an answer in the question's language and validate every citation.
+5. Retry answers that omit citations, cite unknown sources, or cite graph hints
+   instead of original chunks.
+
+The eighth milestone implements the first bounded RP-ReAct agent loop:
+
+1. A Reasoner Planner produces one to three evidence objectives as strict JSON.
+2. A retrieval-only Proxy Executor translates each objective into a hybrid
+   retrieval tool call and records the observation.
+3. Independent retrieval steps run concurrently with a configurable limit.
+4. Reciprocal Rank Fusion (RRF) merges and deduplicates chunk, entity, and
+   relationship results across queries.
+5. After observing fused source summaries, the planner decides whether to
+   answer or add a focused retrieval step, within a strict replan limit.
+6. The grounded answer stage consumes the fused evidence directly, without an
+   extra hidden retrieval call.
+
+The ninth milestone implements bounded persistent conversation memory:
+
+1. Store completed questions, answers, document scope, timestamps, and only
+   the sources actually cited by each answer.
+2. Persist sessions atomically as readable JSON under `data/memory/`.
+3. Inject a configurable number of recent turns into planning, evidence review,
+   and answer generation for reference resolution.
+4. Treat remembered text as quoted conversation context rather than citable
+   research evidence or executable instructions.
+5. Write a turn only after retrieval, generation, and citation validation all
+   succeed.
+
+The PyMuPDF parser detects ruled and Booktabs-style academic tables, as well as
+displayed equations represented in the PDF text layer. Scanned pages and more
+complex visual layouts remain candidates for a future layout/OCR parser behind
+the same `DocumentParser` interface.
 
 BM25 is not part of this project. The normalized multimodal content is indexed
 into LightRAG for vector and knowledge-graph retrieval. A later milestone will
@@ -84,6 +120,10 @@ conda run -n mrag python main.py chunk <document_id>
 conda run -n mrag python main.py extract-kg <document_id>
 conda run -n mrag python main.py prepare <document_id> --full-prompts
 conda run -n mrag python main.py retrieve "<question>" --document-id <document_id>
+conda run -n mrag python main.py answer "<question>" --document-id <document_id>
+conda run -n mrag python main.py agent "<complex-question>" --document-id <document_id>
+conda run -n mrag python main.py agent "<follow-up>" --document-id <document_id> --session-id research-1
+conda run -n mrag python main.py memory-inspect research-1
 ```
 
 Parsed documents are stored under `data/parsed/`. Extracted images and table
@@ -166,7 +206,7 @@ LightRAG data is persisted under `data/lightrag/`. The indexing mapping is:
 | `belongs_to` relation | graph edge and `relationships_vdb` |
 | `ParsedDocument.source_path` | citation `file_path` |
 
-Inspect retrieval before connecting an answer model:
+Inspect retrieval evidence directly:
 
 ```powershell
 conda run -n mrag python main.py retrieve "How is the dual graph constructed?" --document-id <document_id> --top-k 5
@@ -175,6 +215,40 @@ conda run -n mrag python main.py retrieve "How is the dual graph constructed?" -
 The output separates chunks, entities, and relationships. Chunk hits include
 their vector score, retrieval channels, one-based page range, section path,
 and multimodal asset metadata when available.
+
+Generate a grounded answer with the configured DeepSeek-compatible model:
+
+```powershell
+conda run -n mrag python main.py answer "How does RP-ReAct separate planning from execution?" --document-id <document_id> --top-k 6
+```
+
+The JSON output contains the Markdown answer, the cited `[S#]` IDs, and a
+source map back to each chunk's document, page range, section, and modality.
+
+For a multi-part question, run the planner/executor path:
+
+```powershell
+conda run -n mrag python main.py agent "How does RP-ReAct separate planning from execution, and when does that separation help or hurt?" --document-id <document_id> --max-steps 3 --max-replans 1
+```
+
+The output exposes the generated plan, every `retrieve_evidence` call, each
+evidence-sufficiency review, fused evidence counts, and the final source-cited
+answer. `stop_reason` distinguishes sufficient evidence from a reached review
+limit. Set `--max-replans 0` for the faster plan-once path. The current proxy
+executor has one reliable tool; later milestones can add paper comparison,
+citation lookup, and calculation tools behind the same execution boundary.
+
+Reuse the same session ID for follow-up questions:
+
+```powershell
+conda run -n mrag python main.py agent "How is CPS calculated?" --document-id <document_id> --session-id rp-react-study
+conda run -n mrag python main.py agent "Why does it combine those two terms?" --document-id <document_id> --session-id rp-react-study
+conda run -n mrag python main.py memory-inspect rp-react-study
+```
+
+Session IDs may contain letters, digits, underscores, and hyphens. By default,
+the most recent four completed turns are included in model context; change this
+with `--memory-turns`.
 
 On a fresh Windows environment with an RTX 50-series GPU, install a CUDA build
 of PyTorch before installing the local embedding extra:
